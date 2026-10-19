@@ -1,0 +1,618 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Kangaroo Fresh Mart – Admin</title>
+<style>
+:root{--g:#1d6a33;--o:#f0821a;--ink:#14261a;--mut:#5d6b60;--line:#dfe7dc;--bg:#f4f7f1;--card:#fff}
+*{box-sizing:border-box}body{margin:0;font:16px/1.45 system-ui,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink);padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+[hidden]{display:none!important}
+header{background:var(--g);color:#fff;padding:12px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;position:sticky;top:0;z-index:5}
+header h1{font-size:18px;margin:0;flex:1}header a,header button{color:#fff}
+.badge{background:#ffffff26;border-radius:99px;padding:4px 10px;font-size:13px}
+nav{display:flex;gap:6px;padding:10px 12px;overflow-x:auto;background:#fff;border-bottom:1px solid var(--line)}
+nav button{border:1px solid var(--line);background:#fff;border-radius:99px;padding:8px 14px;font:inherit;white-space:nowrap;cursor:pointer}
+nav button.on{background:var(--o);border-color:var(--o);color:#fff;font-weight:700}
+main{padding:14px;max-width:1100px;margin:auto}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:14px}
+h2{margin:0 0 10px;font-size:19px}
+label{display:block;font-size:13px;color:var(--mut);margin:8px 0 3px}
+input,select,textarea{font:inherit;width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.btn{background:var(--o);color:#fff;border:0;border-radius:10px;padding:10px 16px;font:inherit;font-weight:700;cursor:pointer}
+.btn.alt{background:#fff;color:var(--ink);border:1px solid var(--line)}.btn.sm{padding:6px 10px;font-size:14px}
+.tw{overflow-x:auto}table{border-collapse:collapse;width:100%;min-width:640px}
+th,td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle;font-size:14px}th{color:var(--mut);font-weight:600}
+td input{padding:6px 8px;min-width:70px}td input.w{min-width:150px}
+.th{width:44px;height:44px;border-radius:10px;background:#eef3ea;display:grid;place-items:center;overflow:hidden;font-size:22px}.th{position:relative}.th img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:14px}
+.stats div{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px}.stats b{display:block;font-size:24px;color:var(--g)}
+.mut{color:var(--mut);font-size:14px}.err{color:#c0392b}
+#login{max-width:380px;margin:12vh auto;padding:20px}
+/* premium admin look */
+:root{--g:#12663a;--o:#f3811b;--bg:#f7f4ea;--line:#e8eadc;--sh:0 1px 2px rgba(20,38,27,.05),0 16px 34px -16px rgba(20,60,30,.25)}
+body{font-family:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:radial-gradient(900px 480px at 100% -10%,rgba(248,187,42,.16),transparent 60%),var(--bg);-webkit-font-smoothing:antialiased}
+header{background:linear-gradient(135deg,#12663a,#0a3f24);box-shadow:0 14px 30px -18px rgba(10,63,36,.9)}
+header h1{font-family:Fraunces,Georgia,serif;font-weight:800;letter-spacing:-.01em}
+.badge{backdrop-filter:blur(6px);border:1px solid #ffffff30}
+nav{background:rgba(255,255,255,.8);backdrop-filter:blur(12px);position:sticky;top:60px;z-index:4;box-shadow:0 10px 24px -22px rgba(20,60,30,.6)}
+nav button{transition:all .2s}nav button:hover{border-color:var(--o);color:var(--o)}
+nav button.on,nav button.on:hover{color:#fff}
+nav button.on{background:linear-gradient(135deg,#ff9a2e,#f06d0f);box-shadow:0 10px 18px -10px rgba(240,109,15,.9)}
+.card{border:0;border-radius:22px;box-shadow:var(--sh)}
+h2{font-family:Fraunces,Georgia,serif;font-weight:800;letter-spacing:-.01em;font-size:22px}
+.btn{background:linear-gradient(135deg,#ff9a2e,#f06d0f);box-shadow:0 12px 22px -14px rgba(240,109,15,.9);transition:transform .15s}.btn:hover{transform:translateY(-1px)}
+.btn.alt{background:#fff;box-shadow:none}
+input,select,textarea{border-radius:12px;transition:box-shadow .2s,border-color .2s}input:focus,select:focus,textarea:focus{outline:0;border-color:var(--o);box-shadow:0 0 0 4px rgba(243,129,27,.18)}
+thead th{background:#f3f7ea;font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+tbody tr:hover{background:#fbfdf6}
+.stats div{border:0;border-radius:20px;box-shadow:var(--sh);background:linear-gradient(160deg,#fff,#f4f9ea)}.stats b{font-family:Fraunces,Georgia,serif;font-size:28px}
+.th{border-radius:12px;background:linear-gradient(160deg,#fff,#eef5e2)}
+#login{background:#fff;border-radius:28px;box-shadow:0 40px 80px -40px rgba(10,63,36,.6);padding:28px}
+dialog{border:0;border-radius:26px;padding:0;width:min(560px,94vw);max-height:92vh;box-shadow:0 40px 90px -30px rgba(0,0,0,.55)}
+dialog::backdrop{background:rgba(8,30,18,.5);backdrop-filter:blur(5px)}
+.dlg{padding:20px;overflow:auto;max-height:92vh}.dlg h2{margin-bottom:4px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:480px){.row2{grid-template-columns:1fr}}
+.dlg .acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;position:sticky;bottom:0;background:#fff;padding:10px 0}
+.hint{font-size:12.5px;color:var(--mut);margin-top:3px}
+.tabs2{display:flex;gap:6px;margin:10px 0 4px}.tabs2 button{flex:1;border:1px solid var(--line);background:#fff;border-radius:12px;padding:9px;font:inherit;cursor:pointer}.tabs2 button.on{background:#eef7e2;border-color:var(--g);font-weight:700}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+</head><body>
+
+<section id="login" class="card">
+  <h2>🦘 Admin sign in</h2>
+  <p class="mut" id="lmode"></p>
+  <div id="lemail"><label>Email</label><input id="em" type="email" autocomplete="username"></div>
+  <label id="lpl">Password</label><input id="pw" type="password" autocomplete="current-password">
+  <p class="err" id="lerr"></p>
+  <button class="btn" id="lgo" style="width:100%">Sign in</button>
+</section>
+
+<div id="app" hidden>
+<header><h1>🦘 Kangaroo Fresh Mart · Admin</h1><span class="badge" id="mode"></span><span class="badge" id="st">Ready</span><a href="index.html" target="_blank" rel="noopener">Open public site ↗</a><button class="btn alt sm" id="out">Sign out</button></header>
+<div id="warn" hidden style="margin:10px 12px 0;padding:12px 14px;border-radius:14px;font-size:14px"></div>
+<nav id="tabs"></nav>
+<main id="main"></main>
+</div>
+<input type="file" id="file" accept="image/*" hidden>
+<dialog id="pd"><div class="dlg">
+ <h2 id="pdt">Add a product</h2>
+ <div class="tabs2" id="pdtabs"><button data-pm="one" class="on">One product</button><button data-pm="bulk">Many at once</button></div>
+ <div id="pone">
+  <div class="row2"><div><label>Name (English) *</label><input id="f_en" placeholder="e.g. Fresh Guava"></div><div><label>Name (বাংলা)</label><input id="f_bn" placeholder="যেমন: তাজা পেয়ারা"></div></div>
+  <div class="row2"><div><label>Category *</label><select id="f_cat"></select></div><div><label>Sold per *</label><select id="f_u"><option value="kg">per kg</option><option value="pc">each (piece)</option><option value="pack">per pack</option><option value="dozen">per dozen</option><option value="l">per litre</option><option value="bunch">per bunch</option><option value="g500">per 500 g</option></select></div></div>
+  <div class="row2"><div><label>Price ৳ *</label><input id="f_p" inputmode="decimal"></div><div><label>Old price ৳ (shows a discount)</label><input id="f_old" inputmode="decimal"></div></div>
+  <div class="row2"><div><label>Stock (empty = no limit, 0 = sold out)</label><input id="f_stock" inputmode="numeric"></div><div><label>Emoji (shown until you add a photo)</label><input id="f_e" value="🛒" maxlength="4"></div></div>
+  <label>Small / Medium / Big buttons</label><select id="f_sz"><option value="">No size choice</option><option value="size">Small / Medium / Big (fresh items: -15% / listed price / +20%)</option><option value="pack">Small / Medium / Big (packs and bottles: -45% / listed price / +80%)</option></select>
+  <label>Search words (optional, separate with spaces)</label><input id="f_g" placeholder="e.g. guava peyara পেয়ারা fruit">
+  <div class="row2"><div><label>Photo from your device</label><input type="file" id="f_file" accept="image/*"></div><div><label>or photo link (https://…)</label><input id="f_img" placeholder="https://…"></div></div>
+  <p class="hint">Use photos you took yourself or have the right to use.</p>
+ </div>
+ <div id="pbulk" hidden>
+  <p class="mut">One product per line: <b>Name | price | category | unit</b>. Category and unit are optional (category can be a name like Fruit or a key like fruit; unit: kg, pc, pack, dozen, l, bunch).</p>
+  <textarea id="f_bulk" rows="9" placeholder="Fresh Guava | 120 | fruit | kg&#10;Green Tea Box | 180 | snacks | pack&#10;Brown Eggs | 150 | dairy | dozen"></textarea>
+  <p class="hint" id="bulkinfo"></p>
+ </div>
+ <p class="err" id="pderr"></p>
+ <div class="acts"><button class="btn" id="pdsave">Save product</button><button class="btn alt" id="pdcancel">Cancel</button></div>
+</div></dialog>
+
+<script>
+/* ===== SHOP CONNECTION SETTINGS (keep this block identical in index.html and admin.html) =====
+   LOCAL mode (default, leave firebaseUrl empty): admin.html and index.html share data in the SAME browser only.
+   CLOUD mode: paste your Firebase details below. Then every change in admin.html appears on all customers' devices. See SETUP.txt */
+window.KFM_CONFIG={
+  firebaseUrl:"",   // e.g. "https://your-project-default-rtdb.firebaseio.com"
+  apiKey:"",        // Firebase "Web API key" (needed for the admin login)
+  localPin:"1234"     // LOCAL mode only: choose a PIN for admin.html (it is stored in this file, so it is NOT real security)
+};
+
+</script><script>
+/* Shared by index.html and admin.html. Cloud = Firebase Realtime Database REST API. Local = this browser's storage. */
+(function(){
+const C=window.KFM_CONFIG||{},DB=(C.firebaseUrl||"").replace(/\/$/,""),cloud=!!DB,LS=localStorage;
+const bc="BroadcastChannel"in window?new BroadcastChannel("kfm"):null;
+const jget=(k,d)=>{try{const v=JSON.parse(LS.getItem(k));return v==null?d:v}catch(e){return d}};
+const jset=(k,v)=>{try{LS.setItem(k,JSON.stringify(v));return true}catch(e){return false}};
+let token=sessionStorage.getItem("kfm_tok")||"";
+const url=(p,auth)=>DB+"/"+p+".json"+(auth&&token?"?auth="+encodeURIComponent(token):"");
+async function req(m,p,body,auth){const r=await fetch(url(p,auth),{method:m,headers:{"Content-Type":"application/json"},body:body===undefined?undefined:JSON.stringify(body)});if(!r.ok)throw new Error("HTTP "+r.status);return r.json()}
+const list=o=>Object.keys(o||{}).map(k=>Object.assign({id:k},o[k]));
+const subs=[];let last="";
+const K={mode:cloud?"cloud":"local",
+ cache:()=>jget("kfmx_store",{}),
+ async store(){if(!cloud)return jget("kfmx_store",{});const s=(await req("GET","store"))||{};jset("kfmx_store",s);return s},
+ async saveStore(s){s.updated=Date.now();if(cloud)await req("PUT","store",s,true);jset("kfmx_store",s);bc&&bc.postMessage("store")},
+ onStore(f){subs.push(f)},
+ start(){const fire=async()=>{try{const s=await K.store(),j=JSON.stringify(s);if(j!==last){last=j;subs.forEach(f=>f(s))}}catch(e){}};
+  fire();if(cloud){setInterval(fire,8000);document.addEventListener("visibilitychange",()=>{if(!document.hidden)fire()})}
+  else{bc&&(bc.onmessage=fire);addEventListener("storage",e=>{if(e.key==="kfmx_store"||e.key==="kfmx_ph")fire()})}},
+ async photo(id){if(cloud)return req("GET","photos/"+id);return jget("kfmx_ph",{})[id]||null},
+ async putPhoto(id,d){if(cloud)await req("PUT","photos/"+id,d,true);else{const p=jget("kfmx_ph",{});p[id]=d;jset("kfmx_ph",p)}bc&&bc.postMessage("store")},
+ async addOrder(o){o=Object.assign({status:"Pending",created:Date.now()},o);if(cloud)return req("POST","orders",o);const a=jget("kfmx_orders",[]);o.id="L"+Date.now();a.push(o);jset("kfmx_orders",a)},
+ async orders(){if(cloud)return list(await req("GET","orders",undefined,true));return jget("kfmx_orders",[])},
+ async setOrder(id,patch){if(cloud)return req("PATCH","orders/"+id,patch,true);const a=jget("kfmx_orders",[]),o=a.find(x=>x.id===id);if(o)Object.assign(o,patch);jset("kfmx_orders",a)},
+ async addReview(r){r=Object.assign({created:Date.now()},r);if(cloud)return req("POST","reviewsPending",r);const a=jget("kfmx_revp",[]);r.id="R"+Date.now();a.push(r);jset("kfmx_revp",a)},
+ async pending(){if(cloud)return list(await req("GET","reviewsPending",undefined,true));return jget("kfmx_revp",[])},
+ async delPending(id){if(cloud)return req("DELETE","reviewsPending/"+id,undefined,true);jset("kfmx_revp",jget("kfmx_revp",[]).filter(x=>x.id!==id))},
+ isAdmin:()=>cloud?!!token:sessionStorage.getItem("kfm_admin")==="1",
+ async login(a,b){
+  if(!cloud){if(!C.localPin)throw new Error("Set localPin in kfm-config.js first");if(a!==C.localPin)throw new Error("Wrong PIN");sessionStorage.setItem("kfm_admin","1");return}
+  const r=await fetch((C.identityUrl||"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword")+"?key="+encodeURIComponent(C.apiKey||"x"),{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:a,password:b,returnSecureToken:true})});
+  const d=await r.json();if(!r.ok||!d.idToken)throw new Error("Wrong email or password");
+  token=d.idToken;sessionStorage.setItem("kfm_tok",token);sessionStorage.setItem("kfm_rt",d.refreshToken||"");setTimeout(K.refresh,Math.max(60,(+d.expiresIn||3600)-120)*1000)},
+ async refresh(){const rt=sessionStorage.getItem("kfm_rt");if(!rt||!cloud)return;try{const r=await fetch((C.tokenUrl||"https://securetoken.googleapis.com/v1/token")+"?key="+encodeURIComponent(C.apiKey||"x"),{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:"grant_type=refresh_token&refresh_token="+encodeURIComponent(rt)});const d=await r.json();if(d.id_token){token=d.id_token;sessionStorage.setItem("kfm_tok",token);setTimeout(K.refresh,3000*1000)}}catch(e){}},
+ logout(){token="";sessionStorage.clear()}
+};
+window.KFM=K;
+})();
+
+</script><script>
+/* Base catalogue shared by index.html and admin.html (admin edits are stored as overrides on top of this). */
+const KFM_CATS=[
+ {k:"all",en:"All",bn:"সব",e:"🛒",img:"cat-all.jpg"},
+ {k:"veg",en:"Vegetables",bn:"সবজি",e:"🥕",img:"cat-vegetables.jpg"},
+ {k:"fruit",en:"Fruit",bn:"ফল",e:"🍊",img:"cat-fruit.jpg"},
+ {k:"meat",en:"Fish & meat",bn:"মাছ ও মাংস",e:"🐟",img:"cat-fish.jpg"},
+ {k:"dairy",en:"Dairy & eggs",bn:"দুধ ও ডিম",e:"🥛",img:"cat-dairy.jpg"},
+ {k:"pantry",en:"Pantry",bn:"মুদি",e:"🍚",img:"cat-pantry.jpg"},
+ {k:"snacks",en:"Snacks & drinks",bn:"স্ন্যাকস ও পানীয়",e:"🍪",img:"cat-snacks.jpg"},
+ {k:"spices",en:"Spices",bn:"মসলা",e:"🧂",img:"cat-spices.jpg"},
+ {k:"bakery",en:"Bakery",bn:"বেকারি",e:"🍞",img:"cat-bakery.jpg"},
+ {k:"frozen",en:"Frozen",bn:"ফ্রোজেন",e:"🧊",img:"cat-frozen.jpg"},
+ {k:"household",en:"Household",bn:"ঘরের জিনিস",e:"🧴",img:"cat-household.jpg"},
+ {k:"personal",en:"Personal care",bn:"ব্যক্তিগত যত্ন",e:"🧼",img:"cat-personal.jpg"},
+ {k:"baby",en:"Baby",bn:"শিশুর পণ্য",e:"🍼",img:"cat-baby.jpg"}
+];
+const KFM_PRODUCTS=[
+ {id:"tomato",en:"Tomatoes",bn:"টমেটো",cat:"veg",u:"kg",p:90,img:"tomatoes.jpg",e:"🍅"},
+ {id:"potato",en:"Potatoes",bn:"আলু",cat:"veg",u:"kg",p:50,img:"potatoes.jpg",e:"🥔"},
+ {id:"onion",en:"Onions",bn:"পেঁয়াজ",cat:"veg",u:"kg",p:70,img:"onions.jpg",e:"🧅"},
+ {id:"spinach",en:"Spinach",bn:"পালং শাক",cat:"veg",u:"bunch",p:30,img:"spinach.jpg",e:"🥬"},
+ {id:"eggplant",en:"Eggplant",bn:"বেগুন",cat:"veg",u:"kg",p:80,img:"eggplant.jpg",e:"🍆"},
+ {id:"cucumber",en:"Cucumber",bn:"শসা",cat:"veg",u:"kg",p:60,img:"cucumber.jpg",e:"🥒"},
+ {id:"banana",en:"Bananas",bn:"কলা",cat:"fruit",u:"dozen",p:90,img:"bananas.jpg",e:"🍌"},
+ {id:"mango",en:"Mangoes",bn:"আম",cat:"fruit",u:"kg",p:160,old:190,img:"mangoes.jpg",e:"🥭"},
+ {id:"apple",en:"Apples",bn:"আপেল",cat:"fruit",u:"kg",p:280,img:"apples.jpg",e:"🍎"},
+ {id:"orange",en:"Oranges",bn:"কমলা",cat:"fruit",u:"kg",p:200,img:"oranges.jpg",e:"🍊"},
+ {id:"rohu",en:"Rohu fish",bn:"রুই মাছ",cat:"meat",u:"kg",p:350,img:"rohu.jpg",e:"🐟"},
+ {id:"chicken",en:"Chicken",bn:"মুরগি",cat:"meat",u:"kg",p:260,img:"chicken.jpg",e:"🍗"},
+ {id:"beef",en:"Beef",bn:"গরুর মাংস",cat:"meat",u:"kg",p:780,img:"beef.jpg",e:"🥩"},
+ {id:"milk",en:"Fresh milk",bn:"তাজা দুধ",cat:"dairy",u:"l",p:110,old:120,img:"milk.jpg",e:"🥛"},
+ {id:"eggs",en:"Eggs",bn:"ডিম",cat:"dairy",u:"dozen",p:140,old:155,img:"eggs.jpg",e:"🥚"},
+ {id:"yogurt",en:"Yogurt",bn:"দই",cat:"dairy",u:"pack",p:90,img:"yogurt.jpg",e:"🍶"},
+ {id:"butter",en:"Butter",bn:"মাখন",cat:"dairy",u:"pack",p:220,img:"butter.jpg",e:"🧈"},
+ {id:"rice",en:"Basmati rice",bn:"বাসমতি চাল",cat:"pantry",u:"kg",p:150,old:170,img:"rice.jpg",e:"🍚"},
+ {id:"oil",en:"Cooking oil",bn:"সয়াবিন তেল",cat:"pantry",u:"l",p:190,old:210,img:"oil.jpg",e:"🫗"},
+ {id:"lentil",en:"Lentils (masoor dal)",bn:"মসুর ডাল",cat:"pantry",u:"kg",p:130,img:"lentils.jpg",e:"🫘"},
+ {id:"sugar",en:"Sugar",bn:"চিনি",cat:"pantry",u:"kg",p:125,img:"sugar.jpg",e:"🍬"},
+ {id:"flour",en:"Flour (atta)",bn:"আটা",cat:"pantry",u:"kg",p:60,img:"flour.jpg",e:"🌾"},
+ {id:"tea",en:"Tea leaves",bn:"চা পাতা",cat:"snacks",u:"pack",p:140,img:"tea.jpg",e:"🍵"},
+ {id:"biscuit",en:"Biscuits",bn:"বিস্কুট",cat:"snacks",u:"pack",p:30,img:"biscuits.jpg",e:"🍪"},
+ {id:"juice",en:"Fruit juice",bn:"ফলের জুস",cat:"snacks",u:"pc",p:50,img:"juice.jpg",e:"🧃"},
+ {id:"carrot",en:"Carrot",bn:"গাজর",cat:"veg",u:"kg",p:80,img:"carrot.jpg",e:"🥕"},
+ {id:"cabbage",en:"Cabbage",bn:"বাঁধাকপি",cat:"veg",u:"pc",p:50,img:"cabbage.jpg",e:"🥬"},
+ {id:"cauliflower",en:"Cauliflower",bn:"ফুলকপি",cat:"veg",u:"pc",p:60,img:"cauliflower.jpg",e:"🥦"},
+ {id:"broccoli",en:"Broccoli",bn:"ব্রকলি",cat:"veg",u:"pc",p:90,img:"broccoli.jpg",e:"🥦"},
+ {id:"garlic",en:"Garlic",bn:"রসুন",cat:"veg",u:"kg",p:240,img:"garlic.jpg",e:"🧄"},
+ {id:"ginger",en:"Ginger",bn:"আদা",cat:"veg",u:"kg",p:260,img:"ginger.jpg",e:"🫚"},
+ {id:"chili",en:"Green chili",bn:"কাঁচা মরিচ",cat:"veg",u:"g500",p:60,img:"chili.jpg",e:"🌶️"},
+ {id:"pumpkin",en:"Pumpkin",bn:"মিষ্টি কুমড়া",cat:"veg",u:"kg",p:50,img:"pumpkin.jpg",e:"🎃"},
+ {id:"okra",en:"Okra",bn:"ঢেঁড়স",cat:"veg",u:"kg",p:90,img:"okra.jpg",e:"🥒"},
+ {id:"lemon",en:"Lemon",bn:"লেবু",cat:"veg",u:"dozen",p:60,img:"lemon.jpg",e:"🍋"},
+ {id:"gourd",en:"Bottle gourd",bn:"লাউ",cat:"veg",u:"pc",p:50,img:"gourd.jpg",e:"🥒"},
+ {id:"bittergourd",en:"Bitter gourd",bn:"করলা",cat:"veg",u:"kg",p:100,img:"bittergourd.jpg",e:"🥒"},
+ {id:"pointedgourd",en:"Pointed gourd",bn:"পটল",cat:"veg",u:"kg",p:80,img:"pointedgourd.jpg",e:"🥒"},
+ {id:"beans",en:"Green beans",bn:"বরবটি",cat:"veg",u:"kg",p:110,img:"beans.jpg",e:"🫛"},
+ {id:"radish",en:"Radish",bn:"মুলা",cat:"veg",u:"kg",p:40,img:"radish.jpg",e:"🥕"},
+ {id:"capsicum",en:"Capsicum",bn:"ক্যাপসিকাম",cat:"veg",u:"kg",p:220,img:"capsicum.jpg",e:"🫑"},
+ {id:"corn",en:"Sweet corn",bn:"ভুট্টা",cat:"veg",u:"pc",p:25,img:"corn.jpg",e:"🌽"},
+ {id:"mushroom",en:"Mushroom",bn:"মাশরুম",cat:"veg",u:"pack",p:120,img:"mushroom.jpg",e:"🍄"},
+ {id:"coriander",en:"Coriander leaves",bn:"ধনেপাতা",cat:"veg",u:"bunch",p:20,img:"coriander.jpg",e:"🌿"},
+ {id:"mint",en:"Mint leaves",bn:"পুদিনা পাতা",cat:"veg",u:"bunch",p:20,img:"mint.jpg",e:"🌿"},
+ {id:"redspinach",en:"Red amaranth",bn:"লাল শাক",cat:"veg",u:"bunch",p:25,img:"redspinach.jpg",e:"🥬"},
+ {id:"kalmi",en:"Water spinach",bn:"কলমি শাক",cat:"veg",u:"bunch",p:20,img:"kalmi.jpg",e:"🥬"},
+ {id:"greenpapaya",en:"Green papaya",bn:"কাঁচা পেঁপে",cat:"veg",u:"kg",p:40,img:"greenpapaya.jpg",e:"🍈"},
+ {id:"rawbanana",en:"Raw banana",bn:"কাঁচা কলা",cat:"veg",u:"dozen",p:50,img:"rawbanana.jpg",e:"🍌"},
+ {id:"springonion",en:"Spring onion",bn:"পেঁয়াজ কলি",cat:"veg",u:"bunch",p:30,img:"springonion.jpg",e:"🌱"},
+ {id:"sweetpotato",en:"Sweet potato",bn:"মিষ্টি আলু",cat:"veg",u:"kg",p:70,img:"sweetpotato.jpg",e:"🍠"},
+ {id:"beetroot",en:"Beetroot",bn:"বিট",cat:"veg",u:"kg",p:80,img:"beetroot.jpg",e:"🥕"},
+ {id:"lettuce",en:"Lettuce",bn:"লেটুস পাতা",cat:"veg",u:"pc",p:40,img:"lettuce.jpg",e:"🥬"},
+ {id:"papaya",en:"Papaya",bn:"পেঁপে",cat:"fruit",u:"kg",p:50,img:"papaya.jpg",e:"🍈"},
+ {id:"watermelon",en:"Watermelon",bn:"তরমুজ",cat:"fruit",u:"kg",p:45,img:"watermelon.jpg",e:"🍉"},
+ {id:"grapes",en:"Grapes",bn:"আঙুর",cat:"fruit",u:"kg",p:400,img:"grapes.jpg",e:"🍇"},
+ {id:"guava",en:"Guava",bn:"পেয়ারা",cat:"fruit",u:"kg",p:120,img:"guava.jpg",e:"🍐"},
+ {id:"pineapple",en:"Pineapple",bn:"আনারস",cat:"fruit",u:"pc",p:80,img:"pineapple.jpg",e:"🍍"},
+ {id:"lychee",en:"Lychee",bn:"লিচু",cat:"fruit",u:"pack",p:150,img:"lychee.jpg",e:"🍒"},
+ {id:"jackfruit",en:"Jackfruit",bn:"কাঁঠাল",cat:"fruit",u:"kg",p:60,img:"jackfruit.jpg",e:"🍈"},
+ {id:"pomegranate",en:"Pomegranate",bn:"ডালিম",cat:"fruit",u:"kg",p:380,img:"pomegranate.jpg",e:"🍎"},
+ {id:"dates",en:"Dates",bn:"খেজুর",cat:"fruit",u:"kg",p:450,img:"dates.jpg",e:"🌴"},
+ {id:"melon",en:"Melon",bn:"বাঙ্গি",cat:"fruit",u:"kg",p:60,img:"melon.jpg",e:"🍈"},
+ {id:"kiwi",en:"Kiwi",bn:"কিউই",cat:"fruit",u:"pc",p:60,img:"kiwi.jpg",e:"🥝"},
+ {id:"pear",en:"Pear",bn:"নাশপাতি",cat:"fruit",u:"kg",p:320,img:"pear.jpg",e:"🍐"},
+ {id:"coconut",en:"Green coconut",bn:"ডাব",cat:"fruit",u:"pc",p:80,img:"coconut.jpg",e:"🥥"},
+ {id:"dragonfruit",en:"Dragon fruit",bn:"ড্রাগন ফল",cat:"fruit",u:"pc",p:120,img:"dragonfruit.jpg",e:"🐉"},
+ {id:"strawberry",en:"Strawberry",bn:"স্ট্রবেরি",cat:"fruit",u:"pack",p:250,img:"strawberry.jpg",e:"🍓"},
+ {id:"boroi",en:"Jujube (boroi)",bn:"কুল",cat:"fruit",u:"kg",p:100,img:"boroi.jpg",e:"🍏"},
+ {id:"hilsa",en:"Hilsa fish",bn:"ইলিশ মাছ",cat:"meat",u:"kg",p:1800,img:"hilsa.jpg",e:"🐟"},
+ {id:"prawn",en:"Prawn",bn:"চিংড়ি",cat:"meat",u:"kg",p:900,img:"prawn.jpg",e:"🦐"},
+ {id:"mutton",en:"Mutton",bn:"খাসির মাংস",cat:"meat",u:"kg",p:1150,img:"mutton.jpg",e:"🍖"},
+ {id:"pangas",en:"Pangas fish",bn:"পাঙ্গাস মাছ",cat:"meat",u:"kg",p:220,img:"pangas.jpg",e:"🐟"},
+ {id:"tilapia",en:"Tilapia fish",bn:"তেলাপিয়া মাছ",cat:"meat",u:"kg",p:230,img:"tilapia.jpg",e:"🐟"},
+ {id:"catla",en:"Catla fish",bn:"কাতলা মাছ",cat:"meat",u:"kg",p:380,img:"catla.jpg",e:"🐟"},
+ {id:"koi",en:"Koi fish",bn:"কই মাছ",cat:"meat",u:"kg",p:360,img:"koi.jpg",e:"🐟"},
+ {id:"pabda",en:"Pabda fish",bn:"পাবদা মাছ",cat:"meat",u:"kg",p:700,img:"pabda.jpg",e:"🐟"},
+ {id:"shutki",en:"Dried fish",bn:"শুঁটকি মাছ",cat:"meat",u:"pack",p:200,img:"shutki.jpg",e:"🐟"},
+ {id:"deshichicken",en:"Deshi chicken",bn:"দেশি মুরগি",cat:"meat",u:"kg",p:520,img:"deshichicken.jpg",e:"🐔"},
+ {id:"duck",en:"Duck",bn:"হাঁস",cat:"meat",u:"kg",p:480,img:"duck.jpg",e:"🦆"},
+ {id:"mince",en:"Minced beef",bn:"গরুর কিমা",cat:"meat",u:"kg",p:820,img:"mince.jpg",e:"🥩"},
+ {id:"sausage",en:"Sausage",bn:"সসেজ",cat:"meat",u:"pack",p:260,img:"sausage.jpg",e:"🌭"},
+ {id:"chickenbreast",en:"Chicken breast",bn:"মুরগির বুকের মাংস",cat:"meat",u:"kg",p:330,img:"chickenbreast.jpg",e:"🍗"},
+ {id:"cheese",en:"Cheese",bn:"চিজ",cat:"dairy",u:"pack",p:250,img:"cheese.jpg",e:"🧀"},
+ {id:"ghee",en:"Ghee",bn:"ঘি",cat:"dairy",u:"pack",p:600,img:"ghee.jpg",e:"🧈"},
+ {id:"duckegg",en:"Duck eggs",bn:"হাঁসের ডিম",cat:"dairy",u:"dozen",p:190,img:"duckegg.jpg",e:"🥚"},
+ {id:"powdermilk",en:"Powder milk",bn:"গুঁড়ো দুধ",cat:"dairy",u:"pack",p:420,img:"powdermilk.jpg",e:"🥛"},
+ {id:"condensed",en:"Condensed milk",bn:"কনডেন্সড মিল্ক",cat:"dairy",u:"pc",p:150,img:"condensed.jpg",e:"🥛"},
+ {id:"cream",en:"Cooking cream",bn:"ক্রিম",cat:"dairy",u:"pack",p:120,img:"cream.jpg",e:"🥛"},
+ {id:"paneer",en:"Paneer",bn:"পনির",cat:"dairy",u:"pack",p:180,img:"paneer.jpg",e:"🧀"},
+ {id:"mishtidoi",en:"Sweet yogurt",bn:"মিষ্টি দই",cat:"dairy",u:"pack",p:120,img:"mishtidoi.jpg",e:"🍮"},
+ {id:"lassi",en:"Lassi",bn:"লাচ্ছি",cat:"dairy",u:"pc",p:35,img:"lassi.jpg",e:"🥤"},
+ {id:"salt",en:"Salt",bn:"লবণ",cat:"pantry",u:"kg",p:45,img:"salt.jpg",e:"🧂"},
+ {id:"mustardoil",en:"Mustard oil",bn:"সরিষার তেল",cat:"pantry",u:"l",p:260,img:"mustardoil.jpg",e:"🫗"},
+ {id:"chickpea",en:"Chickpeas",bn:"ছোলা",cat:"pantry",u:"kg",p:110,img:"chickpea.jpg",e:"🫘"},
+ {id:"noodles",en:"Noodles",bn:"নুডলস",cat:"pantry",u:"pack",p:25,old:30,img:"noodles.jpg",e:"🍜"},
+ {id:"miniket",en:"Miniket rice",bn:"মিনিকেট চাল",cat:"pantry",u:"kg",p:75,img:"miniket.jpg",e:"🍚"},
+ {id:"nazirshail",en:"Nazirshail rice",bn:"নাজিরশাইল চাল",cat:"pantry",u:"kg",p:85,img:"nazirshail.jpg",e:"🍚"},
+ {id:"chinigura",en:"Chinigura rice",bn:"চিনিগুঁড়া চাল",cat:"pantry",u:"kg",p:130,img:"chinigura.jpg",e:"🍚"},
+ {id:"moongdal",en:"Moong dal",bn:"মুগ ডাল",cat:"pantry",u:"kg",p:140,img:"moongdal.jpg",e:"🫘"},
+ {id:"cholardal",en:"Chola dal",bn:"ছোলার ডাল",cat:"pantry",u:"kg",p:120,img:"cholardal.jpg",e:"🫘"},
+ {id:"maskalai",en:"Mashkalai dal",bn:"মাষকলাই ডাল",cat:"pantry",u:"kg",p:170,img:"maskalai.jpg",e:"🫘"},
+ {id:"jaggery",en:"Jaggery",bn:"গুড়",cat:"pantry",u:"kg",p:150,img:"jaggery.jpg",e:"🍯"},
+ {id:"semolina",en:"Semolina",bn:"সুজি",cat:"pantry",u:"kg",p:70,img:"semolina.jpg",e:"🌾"},
+ {id:"vermicelli",en:"Vermicelli",bn:"সেমাই",cat:"pantry",u:"pack",p:40,img:"vermicelli.jpg",e:"🍝"},
+ {id:"pasta",en:"Pasta",bn:"পাস্তা",cat:"pantry",u:"pack",p:90,img:"pasta.jpg",e:"🍝"},
+ {id:"oats",en:"Oats",bn:"ওটস",cat:"pantry",u:"pack",p:280,img:"oats.jpg",e:"🥣"},
+ {id:"cornflakes",en:"Cornflakes",bn:"কর্নফ্লেক্স",cat:"pantry",u:"pack",p:320,img:"cornflakes.jpg",e:"🥣"},
+ {id:"honey",en:"Honey",bn:"মধু",cat:"pantry",u:"pc",p:420,img:"honey.jpg",e:"🍯"},
+ {id:"jam",en:"Jam",bn:"জ্যাম",cat:"pantry",u:"pc",p:180,img:"jam.jpg",e:"🍓"},
+ {id:"peanutbutter",en:"Peanut butter",bn:"পিনাট বাটার",cat:"pantry",u:"pc",p:350,img:"peanutbutter.jpg",e:"🥜"},
+ {id:"ketchup",en:"Tomato ketchup",bn:"টমেটো কেচাপ",cat:"pantry",u:"pc",p:120,img:"ketchup.jpg",e:"🍅"},
+ {id:"soysauce",en:"Soy sauce",bn:"সয়া সস",cat:"pantry",u:"pc",p:70,img:"soysauce.jpg",e:"🥫"},
+ {id:"vinegar",en:"Vinegar",bn:"ভিনেগার",cat:"pantry",u:"pc",p:50,img:"vinegar.jpg",e:"🍶"},
+ {id:"pickle",en:"Pickle (achar)",bn:"আচার",cat:"pantry",u:"pc",p:160,img:"pickle.jpg",e:"🫙"},
+ {id:"chira",en:"Flattened rice (chira)",bn:"চিড়া",cat:"pantry",u:"kg",p:90,img:"chira.jpg",e:"🍚"},
+ {id:"muri",en:"Puffed rice (muri)",bn:"মুড়ি",cat:"pantry",u:"kg",p:80,img:"muri.jpg",e:"🍚"},
+ {id:"peanut",en:"Peanuts",bn:"চিনাবাদাম",cat:"pantry",u:"kg",p:220,img:"peanut.jpg",e:"🥜"},
+ {id:"cashew",en:"Cashew nuts",bn:"কাজুবাদাম",cat:"pantry",u:"pack",p:350,img:"cashew.jpg",e:"🥜"},
+ {id:"almond",en:"Almonds",bn:"কাঠবাদাম",cat:"pantry",u:"pack",p:450,img:"almond.jpg",e:"🌰"},
+ {id:"raisin",en:"Raisins",bn:"কিশমিশ",cat:"pantry",u:"pack",p:180,img:"raisin.jpg",e:"🍇"},
+ {id:"bakingpowder",en:"Baking powder",bn:"বেকিং পাউডার",cat:"pantry",u:"pack",p:60,img:"bakingpowder.jpg",e:"🧁"},
+ {id:"turmeric",en:"Turmeric powder",bn:"হলুদ গুঁড়া",cat:"spices",u:"pack",p:70,img:"turmeric.jpg",e:"🟡"},
+ {id:"chilipowder",en:"Chili powder",bn:"মরিচ গুঁড়া",cat:"spices",u:"pack",p:80,img:"chilipowder.jpg",e:"🌶️"},
+ {id:"cumin",en:"Cumin seeds",bn:"জিরা",cat:"spices",u:"pack",p:90,img:"cumin.jpg",e:"🌿"},
+ {id:"cuminpowder",en:"Cumin powder",bn:"জিরা গুঁড়া",cat:"spices",u:"pack",p:95,img:"cuminpowder.jpg",e:"🌿"},
+ {id:"corianderpowder",en:"Coriander powder",bn:"ধনিয়া গুঁড়া",cat:"spices",u:"pack",p:70,img:"corianderpowder.jpg",e:"🌿"},
+ {id:"blackpepper",en:"Black pepper",bn:"গোল মরিচ",cat:"spices",u:"pack",p:110,img:"blackpepper.jpg",e:"⚫"},
+ {id:"cinnamon",en:"Cinnamon",bn:"দারুচিনি",cat:"spices",u:"pack",p:60,img:"cinnamon.jpg",e:"🪵"},
+ {id:"cardamom",en:"Cardamom",bn:"এলাচ",cat:"spices",u:"pack",p:150,img:"cardamom.jpg",e:"🌿"},
+ {id:"cloves",en:"Cloves",bn:"লবঙ্গ",cat:"spices",u:"pack",p:80,img:"cloves.jpg",e:"🌿"},
+ {id:"bayleaf",en:"Bay leaf",bn:"তেজপাতা",cat:"spices",u:"pack",p:25,img:"bayleaf.jpg",e:"🍃"},
+ {id:"mustardseed",en:"Mustard seeds",bn:"সরিষা",cat:"spices",u:"pack",p:40,img:"mustardseed.jpg",e:"🌱"},
+ {id:"panchphoron",en:"Panch phoron",bn:"পাঁচফোড়ন",cat:"spices",u:"pack",p:45,img:"panchphoron.jpg",e:"🌿"},
+ {id:"garammasala",en:"Garam masala",bn:"গরম মসলা",cat:"spices",u:"pack",p:70,img:"garammasala.jpg",e:"🌶️"},
+ {id:"methi",en:"Fenugreek",bn:"মেথি",cat:"spices",u:"pack",p:35,img:"methi.jpg",e:"🌿"},
+ {id:"kalojira",en:"Nigella seeds",bn:"কালোজিরা",cat:"spices",u:"pack",p:60,img:"kalojira.jpg",e:"⚫"},
+ {id:"dryChili",en:"Dried chili",bn:"শুকনা মরিচ",cat:"spices",u:"pack",p:70,img:"dryChili.jpg",e:"🌶️"},
+ {id:"biryanimasala",en:"Biryani masala",bn:"বিরিয়ানি মসলা",cat:"spices",u:"pack",p:75,img:"biryanimasala.jpg",e:"🍛"},
+ {id:"bread",en:"Bread",bn:"পাউরুটি",cat:"bakery",u:"pack",p:60,img:"bread.jpg",e:"🍞"},
+ {id:"bun",en:"Bun",bn:"বান রুটি",cat:"bakery",u:"pack",p:40,img:"bun.jpg",e:"🥯"},
+ {id:"cake",en:"Cake",bn:"কেক",cat:"bakery",u:"pc",p:150,img:"cake.jpg",e:"🍰"},
+ {id:"rusk",en:"Toast biscuit",bn:"টোস্ট বিস্কুট",cat:"bakery",u:"pack",p:50,img:"rusk.jpg",e:"🥖"},
+ {id:"croissant",en:"Croissant",bn:"ক্রোয়াসাঁ",cat:"bakery",u:"pc",p:70,img:"croissant.jpg",e:"🥐"},
+ {id:"chips",en:"Chips",bn:"চিপস",cat:"snacks",u:"pack",p:30,old:35,img:"chips.jpg",e:"🍟"},
+ {id:"softdrink",en:"Soft drink",bn:"কোমল পানীয়",cat:"snacks",u:"pc",p:40,old:45,img:"softdrink.jpg",e:"🥤"},
+ {id:"water",en:"Drinking water",bn:"খাবার পানি",cat:"snacks",u:"pc",p:20,img:"water.jpg",e:"💧"},
+ {id:"chocolate",en:"Chocolate",bn:"চকলেট",cat:"snacks",u:"pc",p:50,img:"chocolate.jpg",e:"🍫"},
+ {id:"coffee",en:"Instant coffee",bn:"কফি",cat:"snacks",u:"pack",p:250,img:"coffee.jpg",e:"☕"},
+ {id:"greentea",en:"Green tea",bn:"গ্রিন টি",cat:"snacks",u:"pack",p:180,img:"greentea.jpg",e:"🍵"},
+ {id:"energydrink",en:"Energy drink",bn:"এনার্জি ড্রিংক",cat:"snacks",u:"pc",p:90,img:"energydrink.jpg",e:"⚡"},
+ {id:"chanachur",en:"Chanachur",bn:"চানাচুর",cat:"snacks",u:"pack",p:40,img:"chanachur.jpg",e:"🥜"},
+ {id:"nimki",en:"Nimki",bn:"নিমকি",cat:"snacks",u:"pack",p:35,img:"nimki.jpg",e:"🥨"},
+ {id:"cracker",en:"Cream cracker",bn:"ক্র্যাকার বিস্কুট",cat:"snacks",u:"pack",p:45,img:"cracker.jpg",e:"🍘"},
+ {id:"candy",en:"Candy",bn:"ক্যান্ডি",cat:"snacks",u:"pack",p:20,img:"candy.jpg",e:"🍬"},
+ {id:"cocacola",en:"Coca-Cola",bn:"কোকা-কোলা",cat:"snacks",u:"pc",p:40,img:"cocacola.jpg",e:"🥤",g:"soft drink soft drinks cold drink cold drinks soda cola fizzy কোমল পানীয় কোল্ড ড্রিংক",pk:1},
+ {id:"pepsi",en:"Pepsi",bn:"পেপসি",cat:"snacks",u:"pc",p:40,img:"pepsi.jpg",e:"🥤",g:"soft drink soft drinks cold drink cold drinks soda cola fizzy কোমল পানীয় কোল্ড ড্রিংক",pk:1},
+ {id:"sprite",en:"Sprite",bn:"স্প্রাইট",cat:"snacks",u:"pc",p:40,img:"sprite.jpg",e:"🥤",g:"soft drink soft drinks cold drink cold drinks soda cola fizzy কোমল পানীয় কোল্ড ড্রিংক",pk:1},
+ {id:"sevenup",en:"7UP",bn:"সেভেন আপ",cat:"snacks",u:"pc",p:40,img:"sevenup.jpg",e:"🥤",g:"soft drink soft drinks cold drink cold drinks soda cola fizzy কোমল পানীয় কোল্ড ড্রিংক",pk:1},
+ {id:"dew",en:"Mountain Dew",bn:"মাউন্টেন ডিউ",cat:"snacks",u:"pc",p:40,img:"dew.jpg",e:"🥤",g:"soft drink soft drinks cold drink cold drinks soda cola fizzy কোমল পানীয় কোল্ড ড্রিংক",pk:1},
+ {id:"fanta",en:"Fanta",bn:"ফান্টা",cat:"snacks",u:"pc",p:40,img:"fanta.jpg",e:"🥤",g:"soft drink soft drinks cold drink cold drinks soda cola fizzy কোমল পানীয় কোল্ড ড্রিংক",pk:1},
+ {id:"mirinda",en:"Mirinda",bn:"মিরিন্ডা",cat:"snacks",u:"pc",p:40,img:"mirinda.jpg",e:"🥤",g:"soft drink soft drinks cold drink cold drinks soda cola fizzy কোমল পানীয় কোল্ড ড্রিংক",pk:1},
+ {id:"pranup",en:"Pran Up",bn:"প্রাণ আপ",cat:"snacks",u:"pc",p:35,img:"pranup.jpg",e:"🥤",g:"soft drink soft drinks cold drink cold drinks soda cola fizzy কোমল পানীয় কোল্ড ড্রিংক",pk:1},
+ {id:"mojo",en:"Mojo",bn:"মোজো",cat:"snacks",u:"pc",p:35,img:"mojo.jpg",e:"🥤",g:"soft drink soft drinks cold drink cold drinks soda cola fizzy কোমল পানীয় কোল্ড ড্রিংক",pk:1},
+ {id:"clemon",en:"Clemon",bn:"ক্লেমন",cat:"snacks",u:"pc",p:35,img:"clemon.jpg",e:"🥤",g:"soft drink soft drinks cold drink cold drinks soda cola fizzy কোমল পানীয় কোল্ড ড্রিংক",pk:1},
+ {id:"speed",en:"Speed",bn:"স্পিড",cat:"snacks",u:"pc",p:50,img:"speed.jpg",e:"⚡",g:"energy drink energy drinks এনার্জি ড্রিংক",pk:1},
+ {id:"redbull",en:"Red Bull",bn:"রেড বুল",cat:"snacks",u:"pc",p:220,img:"redbull.jpg",e:"⚡",g:"energy drink energy drinks এনার্জি ড্রিংক",pk:1},
+ {id:"monster",en:"Monster Energy",bn:"মনস্টার এনার্জি",cat:"snacks",u:"pc",p:200,img:"monster.jpg",e:"⚡",g:"energy drink energy drinks এনার্জি ড্রিংক",pk:1},
+ {id:"sting",en:"Sting",bn:"স্টিং",cat:"snacks",u:"pc",p:50,img:"sting.jpg",e:"⚡",g:"energy drink energy drinks এনার্জি ড্রিংক",pk:1},
+ {id:"mangojuice",en:"Mango juice",bn:"আমের জুস",cat:"snacks",u:"pc",p:50,img:"mangojuice.jpg",e:"🧃",g:"juice fruit juice drink জুস ফলের জুস",pk:1},
+ {id:"orangejuice",en:"Orange juice",bn:"কমলার জুস",cat:"snacks",u:"pc",p:55,img:"orangejuice.jpg",e:"🧃",g:"juice fruit juice drink জুস ফলের জুস",pk:1},
+ {id:"applejuice",en:"Apple juice",bn:"আপেল জুস",cat:"snacks",u:"pc",p:60,img:"applejuice.jpg",e:"🧃",g:"juice fruit juice drink জুস ফলের জুস",pk:1},
+ {id:"lichijuice",en:"Litchi juice",bn:"লিচু জুস",cat:"snacks",u:"pc",p:50,img:"lichijuice.jpg",e:"🧃",g:"juice fruit juice drink জুস ফলের জুস",pk:1},
+ {id:"mixjuice",en:"Mixed fruit juice",bn:"মিক্স ফ্রুট জুস",cat:"snacks",u:"pc",p:55,img:"mixjuice.jpg",e:"🧃",g:"juice fruit juice drink জুস ফলের জুস",pk:1},
+ {id:"lays",en:"Lay's Classic",bn:"লেজ ক্লাসিক",cat:"snacks",u:"pack",p:30,img:"lays.jpg",e:"🍟",g:"chips crisps potato chips snack চিপস",pk:1},
+ {id:"laysmasala",en:"Lay's Masala",bn:"লেজ মসলা",cat:"snacks",u:"pack",p:30,img:"laysmasala.jpg",e:"🍟",g:"chips crisps potato chips snack চিপস",pk:1},
+ {id:"pringles",en:"Pringles Original",bn:"প্রিংলস অরিজিনাল",cat:"snacks",u:"pack",p:250,img:"pringles.jpg",e:"🍟",g:"chips crisps potato chips snack চিপস",pk:1},
+ {id:"kurkure",en:"Kurkure",bn:"কুরকুরে",cat:"snacks",u:"pack",p:20,img:"kurkure.jpg",e:"🍟",g:"chips crisps potato chips snack চিপস",pk:1},
+ {id:"oreo",en:"Oreo",bn:"ওরিও",cat:"snacks",u:"pack",p:40,img:"oreo.jpg",e:"🍪",g:"biscuit biscuits cookies বিস্কুট কুকিজ",pk:1},
+ {id:"digestive",en:"Digestive biscuit",bn:"ডাইজেস্টিভ বিস্কুট",cat:"snacks",u:"pack",p:60,img:"digestive.jpg",e:"🍪",g:"biscuit biscuits cookies বিস্কুট কুকিজ",pk:1},
+ {id:"marie",en:"Marie biscuit",bn:"মারী বিস্কুট",cat:"snacks",u:"pack",p:35,img:"marie.jpg",e:"🍪",g:"biscuit biscuits cookies বিস্কুট কুকিজ",pk:1},
+ {id:"buttercookies",en:"Butter cookies",bn:"বাটার কুকিজ",cat:"snacks",u:"pack",p:80,img:"buttercookies.jpg",e:"🍪",g:"biscuit biscuits cookies বিস্কুট কুকিজ",pk:1},
+ {id:"choccream",en:"Chocolate cream biscuit",bn:"চকলেট ক্রিম বিস্কুট",cat:"snacks",u:"pack",p:30,img:"choccream.jpg",e:"🍪",g:"biscuit biscuits cookies বিস্কুট কুকিজ",pk:1},
+ {id:"dairymilk",en:"Cadbury Dairy Milk",bn:"ক্যাডবেরি ডেইরি মিল্ক",cat:"snacks",u:"pc",p:100,img:"dairymilk.jpg",e:"🍫",g:"chocolate choco candy চকলেট",pk:1},
+ {id:"kitkat",en:"KitKat",bn:"কিটক্যাট",cat:"snacks",u:"pc",p:60,img:"kitkat.jpg",e:"🍫",g:"chocolate choco candy চকলেট",pk:1},
+ {id:"snickers",en:"Snickers",bn:"স্নিকার্স",cat:"snacks",u:"pc",p:70,img:"snickers.jpg",e:"🍫",g:"chocolate choco candy চকলেট",pk:1},
+ {id:"darkchoc",en:"Dark chocolate",bn:"ডার্ক চকলেট",cat:"snacks",u:"pc",p:150,img:"darkchoc.jpg",e:"🍫",g:"chocolate choco candy চকলেট",pk:1},
+ {id:"ispahani",en:"Ispahani Mirzapore tea",bn:"ইস্পাহানি মির্জাপুর চা",cat:"snacks",u:"pack",p:140,img:"ispahani.jpg",e:"🍵",g:"tea black tea chai চা",pk:1},
+ {id:"tetley",en:"Tetley tea bags",bn:"টেটলি টি ব্যাগ",cat:"snacks",u:"pack",p:150,img:"tetley.jpg",e:"🍵",g:"tea black tea chai চা",pk:1},
+ {id:"lipton",en:"Lipton Yellow Label",bn:"লিপটন ইয়েলো লেবেল",cat:"snacks",u:"pack",p:160,img:"lipton.jpg",e:"🍵",g:"tea black tea chai চা",pk:1},
+ {id:"masalatea",en:"Masala tea",bn:"মসলা চা",cat:"snacks",u:"pack",p:120,img:"masalatea.jpg",e:"🍵",g:"tea black tea chai চা",pk:1},
+ {id:"maggi",en:"Maggi 2-minute noodles",bn:"ম্যাগি নুডলস",cat:"pantry",u:"pack",p:30,img:"maggi.jpg",e:"🍜",g:"noodles instant noodles ramen নুডলস",pk:1},
+ {id:"indomie",en:"Indomie Mi Goreng",bn:"ইন্দোমি মি গোরেং",cat:"pantry",u:"pack",p:25,img:"indomie.jpg",e:"🍜",g:"noodles instant noodles ramen নুডলস",pk:1},
+ {id:"cupnoodles",en:"Cup noodles",bn:"কাপ নুডলস",cat:"pantry",u:"pack",p:90,img:"cupnoodles.jpg",e:"🍜",g:"noodles instant noodles ramen নুডলস",pk:1},
+ {id:"pranmilk",en:"Pran milk",bn:"প্রাণ দুধ",cat:"dairy",u:"pc",p:90,img:"pranmilk.jpg",e:"🥛",g:"milk dairy liquid milk দুধ",pk:1},
+ {id:"aarongmilk",en:"Aarong milk",bn:"আড়ং দুধ",cat:"dairy",u:"pc",p:95,img:"aarongmilk.jpg",e:"🥛",g:"milk dairy liquid milk দুধ",pk:1},
+ {id:"milkvita",en:"Milk Vita milk",bn:"মিল্ক ভিটা দুধ",cat:"dairy",u:"pc",p:85,img:"milkvita.jpg",e:"🥛",g:"milk dairy liquid milk দুধ",pk:1},
+ {id:"freshmilk",en:"Fresh UHT milk",bn:"ফ্রেশ ইউএইচটি দুধ",cat:"dairy",u:"pc",p:110,img:"freshmilk.jpg",e:"🥛",g:"milk dairy liquid milk দুধ",pk:1},
+ {id:"plainyogurt",en:"Plain yogurt",bn:"সাদা দই",cat:"dairy",u:"pack",p:80,img:"plainyogurt.jpg",e:"🥣",g:"yogurt yoghurt curd doi দই",pk:1},
+ {id:"mangoyogurt",en:"Mango yogurt",bn:"আমের দই",cat:"dairy",u:"pack",p:90,img:"mangoyogurt.jpg",e:"🥣",g:"yogurt yoghurt curd doi দই",pk:1},
+ {id:"strawyogurt",en:"Strawberry yogurt",bn:"স্ট্রবেরি দই",cat:"dairy",u:"pack",p:90,img:"strawyogurt.jpg",e:"🥣",g:"yogurt yoghurt curd doi দই",pk:1},
+ {id:"sweetyogurt",en:"Sweet yogurt",bn:"মিষ্টি দই",cat:"dairy",u:"pack",p:110,img:"sweetyogurt.jpg",e:"🥣",g:"yogurt yoghurt curd doi দই",pk:1},
+ {id:"teer",en:"Teer soyabean oil",bn:"তীর সয়াবিন তেল",cat:"pantry",u:"l",p:190,img:"teer.jpg",e:"🛢️",g:"oil cooking oil soyabean তেল সয়াবিন",pk:1},
+ {id:"rupchanda",en:"Rupchanda soyabean oil",bn:"রূপচাঁদা সয়াবিন তেল",cat:"pantry",u:"l",p:195,img:"rupchanda.jpg",e:"🛢️",g:"oil cooking oil soyabean তেল সয়াবিন",pk:1},
+ {id:"freshoil",en:"Fresh soyabean oil",bn:"ফ্রেশ সয়াবিন তেল",cat:"pantry",u:"l",p:192,img:"freshoil.jpg",e:"🛢️",g:"oil cooking oil soyabean তেল সয়াবিন",pk:1},
+ {id:"pusti",en:"Pusti soyabean oil",bn:"পুষ্টি সয়াবিন তেল",cat:"pantry",u:"l",p:188,img:"pusti.jpg",e:"🛢️",g:"oil cooking oil soyabean তেল সয়াবিন",pk:1},
+ {id:"sunflower",en:"Sunflower oil",bn:"সানফ্লাওয়ার তেল",cat:"pantry",u:"l",p:420,img:"sunflower.jpg",e:"🛢️",g:"oil cooking oil soyabean তেল সয়াবিন",pk:1},
+ {id:"oliveoil",en:"Olive oil",bn:"অলিভ অয়েল",cat:"pantry",u:"l",p:1100,img:"oliveoil.jpg",e:"🛢️",g:"oil cooking oil soyabean তেল সয়াবিন",pk:1},
+ {id:"heinz",en:"Heinz tomato ketchup",bn:"হেইঞ্জ টমেটো কেচাপ",cat:"pantry",u:"pc",p:350,img:"heinz.jpg",e:"🍅",g:"ketchup tomato sauce sauce সস কেচাপ",pk:1},
+ {id:"pranketchup",en:"Pran tomato ketchup",bn:"প্রাণ টমেটো কেচাপ",cat:"pantry",u:"pc",p:120,img:"pranketchup.jpg",e:"🍅",g:"ketchup tomato sauce sauce সস কেচাপ",pk:1},
+ {id:"ruchiketchup",en:"Ruchi tomato ketchup",bn:"রুচি টমেটো কেচাপ",cat:"pantry",u:"pc",p:110,img:"ruchiketchup.jpg",e:"🍅",g:"ketchup tomato sauce sauce সস কেচাপ",pk:1},
+ {id:"chilisauce",en:"Chili sauce",bn:"চিলি সস",cat:"pantry",u:"pc",p:90,img:"chilisauce.jpg",e:"🍅",g:"ketchup tomato sauce sauce সস কেচাপ",pk:1},
+ {id:"mayonnaise",en:"Mayonnaise",bn:"মেয়োনেজ",cat:"pantry",u:"pc",p:220,img:"mayonnaise.jpg",e:"🍅",g:"ketchup tomato sauce sauce সস কেচাপ",pk:1},
+ {id:"beefmasala",en:"Beef masala",bn:"গরুর মাংসের মসলা",cat:"spices",u:"pack",p:60,img:"beefmasala.jpg",e:"🧂",g:"masala spice mix spices মসলা",pk:1},
+ {id:"chickenmasala",en:"Chicken masala",bn:"মুরগির মসলা",cat:"spices",u:"pack",p:55,img:"chickenmasala.jpg",e:"🧂",g:"masala spice mix spices মসলা",pk:1},
+ {id:"kebabmasala",en:"Kabab masala",bn:"কাবাব মসলা",cat:"spices",u:"pack",p:65,img:"kebabmasala.jpg",e:"🧂",g:"masala spice mix spices মসলা",pk:1},
+ {id:"teharimasala",en:"Tehari masala",bn:"তেহারি মসলা",cat:"spices",u:"pack",p:70,img:"teharimasala.jpg",e:"🧂",g:"masala spice mix spices মসলা",pk:1},
+ {id:"currypowder",en:"Curry powder",bn:"কারি পাউডার",cat:"spices",u:"pack",p:75,img:"currypowder.jpg",e:"🧂",g:"masala spice mix spices মসলা",pk:1},
+ {id:"chatmasala",en:"Chat masala",bn:"চাট মসলা",cat:"spices",u:"pack",p:50,img:"chatmasala.jpg",e:"🧂",g:"masala spice mix spices মসলা",pk:1},
+ {id:"vanillaice",en:"Vanilla ice cream",bn:"ভ্যানিলা আইসক্রিম",cat:"frozen",u:"pc",p:250,img:"vanillaice.jpg",e:"🍦",g:"ice cream icecream dessert আইসক্রিম",pk:1},
+ {id:"chocice",en:"Chocolate ice cream",bn:"চকলেট আইসক্রিম",cat:"frozen",u:"pc",p:260,img:"chocice.jpg",e:"🍦",g:"ice cream icecream dessert আইসক্রিম",pk:1},
+ {id:"mangoice",en:"Mango ice cream",bn:"আমের আইসক্রিম",cat:"frozen",u:"pc",p:260,img:"mangoice.jpg",e:"🍦",g:"ice cream icecream dessert আইসক্রিম",pk:1},
+ {id:"stickice",en:"Ice cream stick",bn:"আইসক্রিম স্টিক",cat:"frozen",u:"pc",p:30,img:"stickice.jpg",e:"🍦",g:"ice cream icecream dessert আইসক্রিম",pk:1},
+ {id:"kulfi",en:"Kulfi",bn:"কুলফি",cat:"frozen",u:"pc",p:40,img:"kulfi.jpg",e:"🍦",g:"ice cream icecream dessert আইসক্রিম",pk:1},
+ {id:"whitebread",en:"White bread",bn:"সাদা পাউরুটি",cat:"bakery",u:"pack",p:60,img:"whitebread.jpg",e:"🍞",g:"bread loaf toast রুটি পাউরুটি",pk:1},
+ {id:"brownbread",en:"Brown bread",bn:"ব্রাউন ব্রেড",cat:"bakery",u:"pack",p:85,img:"brownbread.jpg",e:"🍞",g:"bread loaf toast রুটি পাউরুটি",pk:1},
+ {id:"sandwichbread",en:"Sandwich bread",bn:"স্যান্ডউইচ ব্রেড",cat:"bakery",u:"pack",p:70,img:"sandwichbread.jpg",e:"🍞",g:"bread loaf toast রুটি পাউরুটি",pk:1},
+ {id:"milkbread",en:"Milk bread",bn:"মিল্ক ব্রেড",cat:"bakery",u:"pack",p:75,img:"milkbread.jpg",e:"🍞",g:"bread loaf toast রুটি পাউরুটি",pk:1},
+ {id:"burgerbun",en:"Burger bun",bn:"বার্গার বান",cat:"bakery",u:"pack",p:60,img:"burgerbun.jpg",e:"🍞",g:"bread loaf toast রুটি পাউরুটি",pk:1},
+ {id:"surfexcel",en:"Surf Excel",bn:"সার্ফ এক্সেল",cat:"household",u:"pack",p:150,img:"surfexcel.jpg",e:"🧺",g:"detergent washing powder laundry ডিটারজেন্ট",pk:1},
+ {id:"wheel",en:"Wheel washing powder",bn:"হুইল ওয়াশিং পাউডার",cat:"household",u:"pack",p:90,img:"wheel.jpg",e:"🧺",g:"detergent washing powder laundry ডিটারজেন্ট",pk:1},
+ {id:"rin",en:"Rin washing powder",bn:"রিন ওয়াশিং পাউডার",cat:"household",u:"pack",p:100,img:"rin.jpg",e:"🧺",g:"detergent washing powder laundry ডিটারজেন্ট",pk:1},
+ {id:"tide",en:"Tide washing powder",bn:"টাইড ওয়াশিং পাউডার",cat:"household",u:"pack",p:110,img:"tide.jpg",e:"🧺",g:"detergent washing powder laundry ডিটারজেন্ট",pk:1},
+ {id:"vim",en:"Vim dishwash",bn:"ভিম ডিশওয়াশ",cat:"household",u:"pc",p:120,img:"vim.jpg",e:"🧽",g:"dishwash dish soap dishwashing liquid বাসন ধোয়া",pk:1},
+ {id:"vimbar",en:"Vim dishwash bar",bn:"ভিম ডিশওয়াশ বার",cat:"household",u:"pc",p:30,img:"vimbar.jpg",e:"🧽",g:"dishwash dish soap dishwashing liquid বাসন ধোয়া",pk:1},
+ {id:"dishliquid",en:"Dishwashing liquid",bn:"ডিশওয়াশিং লিকুইড",cat:"household",u:"pc",p:150,img:"dishliquid.jpg",e:"🧽",g:"dishwash dish soap dishwashing liquid বাসন ধোয়া",pk:1},
+ {id:"harpic",en:"Harpic toilet cleaner",bn:"হারপিক টয়লেট ক্লিনার",cat:"household",u:"pc",p:180,img:"harpic.jpg",e:"🧴",g:"cleaner toilet cleaner floor cleaner disinfectant ক্লিনার",pk:1},
+ {id:"domex",en:"Domex",bn:"ডমেক্স",cat:"household",u:"pc",p:160,img:"domex.jpg",e:"🧴",g:"cleaner toilet cleaner floor cleaner disinfectant ক্লিনার",pk:1},
+ {id:"lizol",en:"Lizol floor cleaner",bn:"লাইজল ফ্লোর ক্লিনার",cat:"household",u:"pc",p:200,img:"lizol.jpg",e:"🧴",g:"cleaner toilet cleaner floor cleaner disinfectant ক্লিনার",pk:1},
+ {id:"dettolliquid",en:"Dettol disinfectant",bn:"ডেটল ডিসইনফেক্ট্যান্ট",cat:"household",u:"pc",p:250,img:"dettolliquid.jpg",e:"🧴",g:"cleaner toilet cleaner floor cleaner disinfectant ক্লিনার",pk:1},
+ {id:"sunsilk",en:"Sunsilk shampoo",bn:"সানসিল্ক শ্যাম্পু",cat:"personal",u:"pc",p:220,img:"sunsilk.jpg",e:"🧴",g:"shampoo hair care hair শ্যাম্পু",pk:1},
+ {id:"clear",en:"Clear shampoo",bn:"ক্লিয়ার শ্যাম্পু",cat:"personal",u:"pc",p:280,img:"clear.jpg",e:"🧴",g:"shampoo hair care hair শ্যাম্পু",pk:1},
+ {id:"dovesh",en:"Dove shampoo",bn:"ডাভ শ্যাম্পু",cat:"personal",u:"pc",p:300,img:"dovesh.jpg",e:"🧴",g:"shampoo hair care hair শ্যাম্পু",pk:1},
+ {id:"hns",en:"Head & Shoulders",bn:"হেড অ্যান্ড শোল্ডারস",cat:"personal",u:"pc",p:320,img:"hns.jpg",e:"🧴",g:"shampoo hair care hair শ্যাম্পু",pk:1},
+ {id:"pantene",en:"Pantene shampoo",bn:"প্যানটিন শ্যাম্পু",cat:"personal",u:"pc",p:290,img:"pantene.jpg",e:"🧴",g:"shampoo hair care hair শ্যাম্পু",pk:1},
+ {id:"lux",en:"Lux soap",bn:"লাক্স সাবান",cat:"personal",u:"pc",p:45,img:"lux.jpg",e:"🧼",g:"soap bath soap bar সাবান",pk:1},
+ {id:"lifebuoy",en:"Lifebuoy soap",bn:"লাইফবয় সাবান",cat:"personal",u:"pc",p:40,img:"lifebuoy.jpg",e:"🧼",g:"soap bath soap bar সাবান",pk:1},
+ {id:"dettolsoap",en:"Dettol soap",bn:"ডেটল সাবান",cat:"personal",u:"pc",p:55,img:"dettolsoap.jpg",e:"🧼",g:"soap bath soap bar সাবান",pk:1},
+ {id:"dovesoap",en:"Dove soap",bn:"ডাভ সাবান",cat:"personal",u:"pc",p:80,img:"dovesoap.jpg",e:"🧼",g:"soap bath soap bar সাবান",pk:1},
+ {id:"pears",en:"Pears soap",bn:"পিয়ার্স সাবান",cat:"personal",u:"pc",p:90,img:"pears.jpg",e:"🧼",g:"soap bath soap bar সাবান",pk:1},
+ {id:"colgate",en:"Colgate toothpaste",bn:"কোলগেট টুথপেস্ট",cat:"personal",u:"pc",p:110,img:"colgate.jpg",e:"🪥",g:"toothpaste teeth dental paste টুথপেস্ট",pk:1},
+ {id:"pepsodent",en:"Pepsodent",bn:"পেপসোডেন্ট",cat:"personal",u:"pc",p:90,img:"pepsodent.jpg",e:"🪥",g:"toothpaste teeth dental paste টুথপেস্ট",pk:1},
+ {id:"closeup",en:"Close Up",bn:"ক্লোজ আপ",cat:"personal",u:"pc",p:100,img:"closeup.jpg",e:"🪥",g:"toothpaste teeth dental paste টুথপেস্ট",pk:1},
+ {id:"sensodyne",en:"Sensodyne",bn:"সেনসোডাইন",cat:"personal",u:"pc",p:280,img:"sensodyne.jpg",e:"🪥",g:"toothpaste teeth dental paste টুথপেস্ট",pk:1},
+ {id:"meswak",en:"Meswak toothpaste",bn:"মেসওয়াক টুথপেস্ট",cat:"personal",u:"pc",p:95,img:"meswak.jpg",e:"🪥",g:"toothpaste teeth dental paste টুথপেস্ট",pk:1},
+ {id:"savlon",en:"Savlon handwash",bn:"স্যাভলন হ্যান্ডওয়াশ",cat:"personal",u:"pc",p:110,img:"savlon.jpg",e:"🧴",g:"handwash hand wash liquid hand soap হ্যান্ডওয়াশ",pk:1},
+ {id:"dettolhw",en:"Dettol handwash",bn:"ডেটল হ্যান্ডওয়াশ",cat:"personal",u:"pc",p:120,img:"dettolhw.jpg",e:"🧴",g:"handwash hand wash liquid hand soap হ্যান্ডওয়াশ",pk:1},
+ {id:"lifebuoyhw",en:"Lifebuoy handwash",bn:"লাইফবয় হ্যান্ডওয়াশ",cat:"personal",u:"pc",p:100,img:"lifebuoyhw.jpg",e:"🧴",g:"handwash hand wash liquid hand soap হ্যান্ডওয়াশ",pk:1},
+ {id:"vaseline",en:"Vaseline lotion",bn:"ভ্যাসলিন লোশন",cat:"personal",u:"pc",p:260,img:"vaseline.jpg",e:"🧴",g:"lotion moisturizer body lotion deodorant body spray skin care লোশন",pk:1},
+ {id:"nivea",en:"Nivea lotion",bn:"নিভিয়া লোশন",cat:"personal",u:"pc",p:350,img:"nivea.jpg",e:"🧴",g:"lotion moisturizer body lotion deodorant body spray skin care লোশন",pk:1},
+ {id:"axe",en:"Axe deodorant",bn:"অ্যাক্স ডিওডোরেন্ট",cat:"personal",u:"pc",p:250,img:"axe.jpg",e:"🧴",g:"lotion moisturizer body lotion deodorant body spray skin care লোশন",pk:1},
+ {id:"rexona",en:"Rexona deodorant",bn:"রেক্সোনা ডিওডোরেন্ট",cat:"personal",u:"pc",p:240,img:"rexona.jpg",e:"🧴",g:"lotion moisturizer body lotion deodorant body spray skin care লোশন",pk:1},
+ {id:"pampers",en:"Pampers diapers",bn:"প্যাম্পার্স ডায়াপার",cat:"baby",u:"pack",p:900,img:"pampers.jpg",e:"👶",g:"diaper diapers nappy baby ডায়াপার",pk:1},
+ {id:"huggies",en:"Huggies diapers",bn:"হাগিস ডায়াপার",cat:"baby",u:"pack",p:880,img:"huggies.jpg",e:"👶",g:"diaper diapers nappy baby ডায়াপার",pk:1},
+ {id:"mamypoko",en:"MamyPoko diapers",bn:"মামিপোকো ডায়াপার",cat:"baby",u:"pack",p:850,img:"mamypoko.jpg",e:"👶",g:"diaper diapers nappy baby ডায়াপার",pk:1},
+ {id:"lactogen",en:"Lactogen",bn:"ল্যাক্টোজেন",cat:"baby",u:"pack",p:780,img:"lactogen.jpg",e:"🍼",g:"baby formula infant milk baby food বেবি ফর্মুলা শিশুর দুধ",pk:1},
+ {id:"nan",en:"Nan Pro",bn:"ন্যান প্রো",cat:"baby",u:"pack",p:1500,img:"nan.jpg",e:"🍼",g:"baby formula infant milk baby food বেবি ফর্মুলা শিশুর দুধ",pk:1},
+ {id:"cerelacwheat",en:"Cerelac wheat",bn:"সেরেলাক গম",cat:"baby",u:"pack",p:330,img:"cerelacwheat.jpg",e:"🍼",g:"baby formula infant milk baby food বেবি ফর্মুলা শিশুর দুধ",pk:1},
+ {id:"cerelacrice",en:"Cerelac rice",bn:"সেরেলাক চাল",cat:"baby",u:"pack",p:320,img:"cerelacrice.jpg",e:"🍼",g:"baby formula infant milk baby food বেবি ফর্মুলা শিশুর দুধ",pk:1},
+ {id:"himsagar",en:"Himsagar mango",bn:"হিমসাগর আম",cat:"fruit",u:"kg",p:180,img:"himsagar.jpg",e:"🥭",g:"mango mangoes আম"},
+ {id:"langra",en:"Langra mango",bn:"ল্যাংড়া আম",cat:"fruit",u:"kg",p:170,img:"langra.jpg",e:"🥭",g:"mango mangoes আম"},
+ {id:"fazli",en:"Fazli mango",bn:"ফজলি আম",cat:"fruit",u:"kg",p:150,img:"fazli.jpg",e:"🥭",g:"mango mangoes আম"},
+ {id:"amrapali",en:"Amrapali mango",bn:"আম্রপালি আম",cat:"fruit",u:"kg",p:160,img:"amrapali.jpg",e:"🥭",g:"mango mangoes আম"},
+ {id:"gopalbhog",en:"Gopalbhog mango",bn:"গোপালভোগ আম",cat:"fruit",u:"kg",p:190,img:"gopalbhog.jpg",e:"🥭",g:"mango mangoes আম"},
+ {id:"sagarbanana",en:"Sagar banana",bn:"সাগর কলা",cat:"fruit",u:"dozen",p:100,img:"sagarbanana.jpg",e:"🍌",g:"banana bananas কলা"},
+ {id:"champabanana",en:"Champa banana",bn:"চাঁপা কলা",cat:"fruit",u:"dozen",p:90,img:"champabanana.jpg",e:"🍌",g:"banana bananas কলা"},
+ {id:"sabribanana",en:"Sabri banana",bn:"সবরি কলা",cat:"fruit",u:"dozen",p:110,img:"sabribanana.jpg",e:"🍌",g:"banana bananas কলা"},
+ {id:"fujiapple",en:"Fuji apple",bn:"ফুজি আপেল",cat:"fruit",u:"kg",p:300,img:"fujiapple.jpg",e:"🍎",g:"apple apples আপেল"},
+ {id:"galaapple",en:"Gala apple",bn:"গালা আপেল",cat:"fruit",u:"kg",p:290,img:"galaapple.jpg",e:"🍎",g:"apple apples আপেল"},
+ {id:"greenapple",en:"Green apple",bn:"সবুজ আপেল",cat:"fruit",u:"kg",p:330,img:"greenapple.jpg",e:"🍎",g:"apple apples আপেল"},
+ {id:"ajwa",en:"Ajwa dates",bn:"আজওয়া খেজুর",cat:"fruit",u:"kg",p:1800,img:"ajwa.jpg",e:"🌴",g:"dates khejur খেজুর"},
+ {id:"medjool",en:"Medjool dates",bn:"মেডজুল খেজুর",cat:"fruit",u:"kg",p:1500,img:"medjool.jpg",e:"🌴",g:"dates khejur খেজুর"},
+ {id:"kalmidates",en:"Kalmi dates",bn:"কালমি খেজুর",cat:"fruit",u:"kg",p:900,img:"kalmidates.jpg",e:"🌴",g:"dates khejur খেজুর"},
+ {id:"sukkari",en:"Sukkari dates",bn:"সুক্কারি খেজুর",cat:"fruit",u:"kg",p:800,img:"sukkari.jpg",e:"🌴",g:"dates khejur খেজুর"},
+ {id:"redpotato",en:"Red potato",bn:"লাল আলু",cat:"veg",u:"kg",p:55,img:"redpotato.jpg",e:"🥔",g:"potato potatoes আলু"},
+ {id:"diamondpotato",en:"Diamond potato",bn:"ডায়মন্ড আলু",cat:"veg",u:"kg",p:50,img:"diamondpotato.jpg",e:"🥔",g:"potato potatoes আলু"},
+ {id:"cherrytomato",en:"Cherry tomato",bn:"চেরি টমেটো",cat:"veg",u:"kg",p:300,img:"cherrytomato.jpg",e:"🍅",g:"tomato tomatoes টমেটো"},
+ {id:"desitomato",en:"Local tomato",bn:"দেশি টমেটো",cat:"veg",u:"kg",p:80,img:"desitomato.jpg",e:"🍅",g:"tomato tomatoes টমেটো"},
+ {id:"golda",en:"Golda prawn",bn:"গলদা চিংড়ি",cat:"meat",u:"kg",p:1200,img:"golda.jpg",e:"🦐",g:"shrimp prawn prawns চিংড়ি"},
+ {id:"bagda",en:"Bagda shrimp",bn:"বাগদা চিংড়ি",cat:"meat",u:"kg",p:800,img:"bagda.jpg",e:"🦐",g:"shrimp prawn prawns চিংড়ি"},
+ {id:"mixshrimp",en:"Small shrimp",bn:"ছোট চিংড়ি",cat:"meat",u:"kg",p:600,img:"mixshrimp.jpg",e:"🦐",g:"shrimp prawn prawns চিংড়ি"},
+ {id:"silvercarp",en:"Silver carp",bn:"সিলভার কার্প",cat:"meat",u:"kg",p:200,img:"silvercarp.jpg",e:"🐟",g:"fish মাছ"},
+ {id:"mrigal",en:"Mrigal",bn:"মৃগেল",cat:"meat",u:"kg",p:300,img:"mrigal.jpg",e:"🐟",g:"fish মাছ"},
+ {id:"bhetki",en:"Bhetki",bn:"ভেটকি",cat:"meat",u:"kg",p:650,img:"bhetki.jpg",e:"🐟",g:"fish মাছ"},
+ {id:"taki",en:"Taki fish",bn:"টাকি মাছ",cat:"meat",u:"kg",p:320,img:"taki.jpg",e:"🐟",g:"fish মাছ"},
+ {id:"paratha",en:"Frozen paratha",bn:"ফ্রোজেন পরোটা",cat:"frozen",u:"pack",p:180,img:"paratha.jpg",e:"🫓"},
+ {id:"nuggets",en:"Chicken nuggets",bn:"চিকেন নাগেটস",cat:"frozen",u:"pack",p:320,img:"nuggets.jpg",e:"🍗"},
+ {id:"peas",en:"Frozen peas",bn:"মটরশুঁটি",cat:"frozen",u:"pack",p:120,img:"peas.jpg",e:"🫛"},
+ {id:"fries",en:"French fries",bn:"ফ্রেঞ্চ ফ্রাই",cat:"frozen",u:"pack",p:220,img:"fries.jpg",e:"🍟"},
+ {id:"icecream",en:"Ice cream",bn:"আইসক্রিম",cat:"frozen",u:"pack",p:250,img:"icecream.jpg",e:"🍨"},
+ {id:"samosa",en:"Frozen samosa",bn:"ফ্রোজেন সমুচা",cat:"frozen",u:"pack",p:160,img:"samosa.jpg",e:"🥟"},
+ {id:"mixveg",en:"Mixed vegetables",bn:"মিক্স সবজি",cat:"frozen",u:"pack",p:130,img:"mixveg.jpg",e:"🥦"},
+ {id:"springroll",en:"Spring roll",bn:"স্প্রিং রোল",cat:"frozen",u:"pack",p:200,img:"springroll.jpg",e:"🥟"},
+ {id:"dishwash",en:"Dishwashing liquid",bn:"ডিশ ওয়াশ",cat:"household",u:"pc",p:120,img:"dishwash.jpg",e:"🧴"},
+ {id:"detergent",en:"Detergent powder",bn:"ডিটারজেন্ট পাউডার",cat:"household",u:"kg",p:150,old:165,img:"detergent.jpg",e:"🧺"},
+ {id:"laundrysoap",en:"Laundry soap",bn:"কাপড় কাচার সাবান",cat:"household",u:"pc",p:30,img:"laundrysoap.jpg",e:"🧼"},
+ {id:"floorcleaner",en:"Floor cleaner",bn:"ফ্লোর ক্লিনার",cat:"household",u:"pc",p:180,img:"floorcleaner.jpg",e:"🧹"},
+ {id:"toiletcleaner",en:"Toilet cleaner",bn:"টয়লেট ক্লিনার",cat:"household",u:"pc",p:150,img:"toiletcleaner.jpg",e:"🚽"},
+ {id:"garbagebag",en:"Garbage bags",bn:"ময়লার ব্যাগ",cat:"household",u:"pack",p:80,img:"garbagebag.jpg",e:"🛍️"},
+ {id:"tissue",en:"Tissue",bn:"টিস্যু",cat:"household",u:"pack",p:70,img:"tissue.jpg",e:"🧻"},
+ {id:"matchbox",en:"Matchbox",bn:"দেশলাই",cat:"household",u:"pack",p:10,img:"matchbox.jpg",e:"🔥"},
+ {id:"coil",en:"Mosquito coil",bn:"মশার কয়েল",cat:"household",u:"pack",p:50,img:"coil.jpg",e:"🦟"},
+ {id:"foil",en:"Aluminium foil",bn:"অ্যালুমিনিয়াম ফয়েল",cat:"household",u:"pc",p:160,img:"foil.jpg",e:"📦"},
+ {id:"candle",en:"Candles",bn:"মোমবাতি",cat:"household",u:"pack",p:40,img:"candle.jpg",e:"🕯️"},
+ {id:"battery",en:"Batteries",bn:"ব্যাটারি",cat:"household",u:"pack",p:90,img:"battery.jpg",e:"🔋"},
+ {id:"soap",en:"Bath soap",bn:"গোসলের সাবান",cat:"personal",u:"pc",p:45,img:"soap.jpg",e:"🧼"},
+ {id:"shampoo",en:"Shampoo",bn:"শ্যাম্পু",cat:"personal",u:"pc",p:220,img:"shampoo.jpg",e:"🧴"},
+ {id:"toothpaste",en:"Toothpaste",bn:"টুথপেস্ট",cat:"personal",u:"pc",p:110,img:"toothpaste.jpg",e:"🪥"},
+ {id:"toothbrush",en:"Toothbrush",bn:"টুথব্রাশ",cat:"personal",u:"pc",p:50,img:"toothbrush.jpg",e:"🪥"},
+ {id:"handwash",en:"Hand wash",bn:"হ্যান্ডওয়াশ",cat:"personal",u:"pc",p:100,img:"handwash.jpg",e:"🧴"},
+ {id:"lotion",en:"Body lotion",bn:"বডি লোশন",cat:"personal",u:"pc",p:250,img:"lotion.jpg",e:"🧴"},
+ {id:"coconutoil",en:"Coconut oil",bn:"নারকেল তেল",cat:"personal",u:"pc",p:140,img:"coconutoil.jpg",e:"🥥"},
+ {id:"deodorant",en:"Deodorant",bn:"ডিওডোরেন্ট",cat:"personal",u:"pc",p:220,img:"deodorant.jpg",e:"🧴"},
+ {id:"razor",en:"Razor",bn:"রেজার",cat:"personal",u:"pack",p:60,img:"razor.jpg",e:"🪒"},
+ {id:"pads",en:"Sanitary pads",bn:"স্যানিটারি প্যাড",cat:"personal",u:"pack",p:110,img:"pads.jpg",e:"🩹"},
+ {id:"sanitizer",en:"Hand sanitizer",bn:"হ্যান্ড স্যানিটাইজার",cat:"personal",u:"pc",p:90,img:"sanitizer.jpg",e:"🧴"},
+ {id:"diaper",en:"Baby diapers",bn:"বেবি ডায়াপার",cat:"baby",u:"pack",p:850,img:"diaper.jpg",e:"👶"},
+ {id:"babypowder",en:"Baby powder",bn:"বেবি পাউডার",cat:"baby",u:"pc",p:180,img:"babypowder.jpg",e:"🍼"},
+ {id:"formula",en:"Baby formula",bn:"বেবি ফর্মুলা",cat:"baby",u:"pack",p:750,img:"formula.jpg",e:"🍼"},
+ {id:"babysoap",en:"Baby soap",bn:"বেবি সাবান",cat:"baby",u:"pc",p:70,img:"babysoap.jpg",e:"🧼"},
+ {id:"wipes",en:"Baby wipes",bn:"বেবি ওয়াইপস",cat:"baby",u:"pack",p:150,img:"wipes.jpg",e:"🧻"},
+ {id:"cerelac",en:"Baby cereal",bn:"বেবি সিরিয়াল",cat:"baby",u:"pack",p:330,img:"cerelac.jpg",e:"🥣"}
+];
+
+</script>
+<script>
+const $=id=>document.getElementById(id),esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const TABS=[["orders","📦 Orders"],["products","🛒 Products & photos"],["offers","🏷 Offers & coupons"],["settings","⚙ Store settings"],["reviews","⭐ Reviews"]];
+let S={},tab="orders",shown=60,q="",cat="all",ORD=[],PEND=[],tm,photoFor=null;
+const BASE={};KFM_PRODUCTS.forEach(p=>BASE[p.id]=p);
+const money=n=>"৳"+Math.round(+n||0).toLocaleString();
+
+/* ---- sign in ---- */
+$("lmode").textContent=KFM.mode==="cloud"?"Cloud mode: your changes go live for every customer.":"Local mode: changes show only in this browser. See SETUP.txt for cloud mode.";
+if(KFM.mode==="local"){$("lemail").hidden=true;$("lpl").textContent="Admin PIN"}
+async function signIn(){$("lerr").textContent="";try{await KFM.login(KFM.mode==="cloud"?$("em").value.trim():$("pw").value,$("pw").value);boot()}catch(e){$("lerr").textContent=e.message}}
+$("lgo").onclick=signIn;$("pw").onkeydown=e=>{if(e.key==="Enter")signIn()};
+$("out").onclick=()=>{KFM.logout();location.reload()};
+if(KFM.isAdmin())boot();
+
+async function boot(){
+  $("login").hidden=true;$("app").hidden=false;$("mode").textContent=KFM.mode==="cloud"?"☁ Cloud":"💻 Local";
+  S=await KFM.store();["products","settings","offer","coupons"].forEach(k=>S[k]=S[k]||{});["custom","reviews"].forEach(k=>S[k]=S[k]||[]);
+  const hosted=/^https?:$/.test(location.protocol)&&!/^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+  if(KFM.mode==="local"){const w=$("warn");w.hidden=false;w.style.background=hosted?"#fdecea":"#fff6dc";w.style.color=hosted?"#9b1c12":"#7a5600";w.innerHTML=hosted?"<b>⚠ Changes will NOT reach your customers.</b> This site is published in Local mode, so each visitor only sees their own browser's data. Set up Cloud mode (kfm-config.js, see SETUP.txt) so everything you add or delete goes live for everyone.":"<b>Local test mode.</b> Changes show only in this browser. To make them live for all customers, set up Cloud mode (SETUP.txt) before publishing."}
+  $("tabs").innerHTML=TABS.map(t=>`<button data-t="${t[0]}">${t[1]}</button>`).join("");
+  go("orders");setInterval(()=>{if(tab==="orders")loadOrders()},10000);
+}
+function go(t){tab=t;document.querySelectorAll("#tabs button").forEach(b=>b.classList.toggle("on",b.dataset.t===t));({orders:vOrders,products:vProducts,offers:vOffers,settings:vSettings,reviews:vReviews})[t]()}
+$("tabs").onclick=e=>{if(e.target.dataset.t)go(e.target.dataset.t)};
+function commit(){$("st").textContent="Saving…";clearTimeout(tm);tm=setTimeout(async()=>{try{await KFM.saveStore(S);$("st").textContent=KFM.mode==="cloud"?"Published ✓ live for everyone":"Saved (this browser only)"}catch(e){$("st").textContent="Save failed: "+e.message}},500)}
+
+/* ---- orders ---- */
+function vOrders(){$("main").innerHTML='<div class="stats" id="ost"></div><div class="card"><h2>Orders <button class="btn alt sm" id="oref">Refresh</button> <button class="btn alt sm" id="ocsv">Export CSV</button></h2><div class="tw"><table><thead><tr><th>Date</th><th>Customer</th><th>Total</th><th>Payment</th><th>Items</th><th>Status</th></tr></thead><tbody id="obody"></tbody></table></div><p class="mut" id="onone"></p></div>';$("oref").onclick=loadOrders;$("ocsv").onclick=ordersCsv;loadOrders()}
+async function loadOrders(){try{ORD=(await KFM.orders()).sort((a,b)=>(b.created||0)-(a.created||0))}catch(e){ORD=[];if($("onone"))$("onone").textContent="Could not load orders: "+e.message}drawOrders()}
+function drawOrders(){if(tab!=="orders"||!$("obody"))return;const paid=ORD.filter(o=>o.status==="Paid"||o.status==="Delivered");
+ $("ost").innerHTML=`<div><b>${ORD.length}</b>Orders</div><div><b>${ORD.filter(o=>o.status==="Pending").length}</b>Pending</div><div><b>${money(paid.reduce((a,o)=>a+(+o.total||0),0))}</b>Paid / delivered</div>`;
+ $("obody").innerHTML=ORD.map(o=>`<tr><td>${new Date(o.created||0).toLocaleString()}<br><span class="mut">${esc(o.orderno||o.id)}</span></td><td>${esc(o.name||"")}<br><span class="mut">${esc(o.phone||"")}</span><br><span class="mut">${esc(o.address||"")}</span><br><span class="mut">${esc((o.mode||"")+" · "+(o.when||""))}</span></td><td><b>${money(o.total)}</b></td><td>${esc(o.payment||"")}<br><span class="mut">${esc(o.trxid||"")}</span></td><td class="mut">${esc(o.items||"").replace(/\n/g,"<br>")}</td><td><select data-oid="${esc(o.id)}">${["Pending","Paid","Delivered","Cancelled"].map(s=>`<option${s===o.status?" selected":""}>${s}</option>`).join("")}</select></td></tr>`).join("");
+ $("onone").textContent=ORD.length?"":"No orders yet. New orders from the public site appear here."}
+function ordersCsv(){const rows=[["date","order","name","phone","address","total","payment","trx","status"]].concat(ORD.map(o=>[new Date(o.created||0).toISOString(),o.orderno||o.id,o.name,o.phone,o.address,o.total,o.payment,o.trxid,o.status]));dl("orders.csv",rows.map(r=>r.map(c=>'"'+String(c==null?"":c).replace(/"/g,'""')+'"').join(",")).join("\n"))}
+function dl(n,t){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([t],{type:"text/csv"}));a.download=n;a.click()}
+
+/* ---- products ---- */
+function vProducts(){
+ $("main").innerHTML=`<div class="card"><h2>Products &amp; photos</h2><p class="mut">Change a price, stock, name, or photo and it goes live on the public site. Leave a box empty to use the original value. Stock 0 shows "Sold out".</p><div class="grid2"><div><label>Search</label><input id="pq" value="${esc(q)}" placeholder="name…"></div><div><label>Category</label><select id="pc"><option value="all">All</option><option value="__mine"${cat==="__mine"?" selected":""}>★ My added products</option><option value="__del"${cat==="__del"?" selected":""}>🗑 Deleted products (restore)</option>${KFM_CATS.filter(c=>c.k!=="all").map(c=>`<option value="${c.k}"${c.k===cat?" selected":""}>${esc(c.en)}</option>`).join("")}</select></div></div> <p><button class="btn alt sm" id="addp">+ Add new product</button> <button class="btn alt sm" id="pcsv">Photo checklist (CSV)</button> <button class="btn alt sm" data-delsel="1" style="color:#b3261e">Delete selected</button></p></div><div class="card tw"><table><thead><tr><th><input type="checkbox" id="selall" style="min-width:0;width:auto" title="Select all shown"></th><th>Photo</th><th>Name</th><th>Price ৳</th><th>Old price ৳</th><th>Stock</th><th>Hide</th><th></th></tr></thead><tbody id="pb"></tbody></table><p><button class="btn alt" id="more">Show more</button></p></div>`;
+ $("pq").oninput=e=>{q=e.target.value;shown=60;rows()};$("pc").onchange=e=>{cat=e.target.value;shown=60;rows()};$("more").onclick=()=>{shown+=60;rows()};$("addp").onclick=()=>openForm();$("pcsv").onclick=photoCsv;rows()}
+function thumb(p,o){const u=o.photo?null:(o.img||p.img);const src=o.img?o.img:(p.img&&!o.photo?(/^(https?:|data:)/.test(p.img)?p.img:"images/"+p.img):"");return `<div class="th" data-th="${p.id}">${o.photo?"🖼":(p.e||"🛒")}${src?`<img src="${esc(src)}" alt="" onerror="this.remove()">`:""}</div>`}
+function rows(){const t=q.toLowerCase(),all=KFM_PRODUCTS.filter(p=>cat!=="__mine"&&((S.products[p.id]||{}).deleted?cat==="__del":cat!=="__del")&&(cat==="all"||cat==="__del"||p.cat===cat)&&(!t||(p.en+" "+(p.bn||"")+" "+p.id).toLowerCase().includes(t))).map(p=>({p,base:true})).concat(S.custom.map((c,i)=>({p:c,i,custom:true})).filter(x=>cat!=="__del"&&(cat==="all"||cat==="__mine"||x.p.cat===cat)&&(!t||x.p.en.toLowerCase().includes(t))));all.sort((a,b)=>(b.custom?1:0)-(a.custom?1:0));
+ $("more").hidden=all.length<=shown;
+ $("pb").innerHTML=all.slice(0,shown).map(x=>{const p=x.p,o=x.base?(S.products[p.id]||{}):p,d=x.base?`data-id="${p.id}"`:`data-ci="${x.i}"`;
+  const f=(k,ph,w)=>`<input ${w?'class="w" ':''}${d} data-f="${k}" value="${esc(o[k]==null?"":o[k])}" placeholder="${esc(ph==null?"":ph)}"${k==="en"||k==="bn"?"":' inputmode="decimal"'}>`;
+  return `<tr><td><input type="checkbox" data-sel="${x.base?p.id:"c:"+x.i}" style="min-width:0;width:auto"></td><td>${thumb(p,o)}<button class="btn alt sm" ${d} data-photo="1">📷</button></td><td>${f("en",p.en,1)}</td><td>${f("p",x.base?p.p:"")}</td><td>${f("old",x.base?(p.old||""):"")}</td><td>${f("stock","∞")}</td><td><input type="checkbox" ${d} data-f="hidden"${o.hidden?" checked":""} style="min-width:0;width:auto"></td><td style="white-space:nowrap">${x.base?(cat==="__del"?`<button class="btn sm" ${d} data-restore="1">Restore</button>`:`<button class="btn alt sm" ${d} data-reset="1">Reset</button> <button class="btn alt sm" ${d} data-bdel="1">Delete</button>`):`<button class="btn alt sm" ${d} data-edit="1">Edit</button> <button class="btn alt sm" ${d} data-del="1">Delete</button>`}</td></tr>`}).join("")}
+let editCi=null,pmode="one";
+function openForm(ci){editCi=ci==null?null:ci;pmode="one";$("pdt").textContent=editCi==null?"Add a product":"Edit product";$("pdtabs").hidden=editCi!=null;setMode("one");
+ $("f_cat").innerHTML=KFM_CATS.filter(c=>c.k!=="all").map(c=>`<option value="${c.k}">${esc(c.en)}</option>`).join("");
+ const c=editCi==null?{e:"🛒",u:"kg",cat:"veg"}:S.custom[editCi];
+ $("f_en").value=c.en||"";$("f_bn").value=c.bn&&c.bn!==c.en?c.bn:"";$("f_cat").value=c.cat||"pantry";$("f_u").value=c.u||"pc";$("f_p").value=c.p==null?"":c.p;$("f_old").value=c.old||"";$("f_stock").value=c.stock==null?"":c.stock;$("f_e").value=c.e||"🛒";$("f_sz").value=c.szm||"";$("f_g").value=c.g||"";$("f_img").value=c.img||"";$("f_file").value="";$("f_bulk").value="";$("pderr").textContent="";$("pd").showModal()}
+function setMode(m){pmode=m;$("pone").hidden=m!=="one";$("pbulk").hidden=m!=="bulk";document.querySelectorAll("#pdtabs button").forEach(b=>b.classList.toggle("on",b.dataset.pm===m));$("pdsave").textContent=m==="bulk"?"Add all":"Save product"}
+$("pdtabs").onclick=e=>{if(e.target.dataset.pm)setMode(e.target.dataset.pm)};
+$("pdcancel").onclick=()=>$("pd").close();
+const num=v=>{v=String(v).trim().replace(/,/g,"");return v===""||isNaN(v)?undefined:Number(v)};
+const newId=()=>"c"+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
+$("pdsave").onclick=async()=>{const err=m=>$("pderr").textContent=m;err("");
+ if(pmode==="bulk"){const units=["kg","pc","pack","dozen","l","bunch","g500"],cats=KFM_CATS.filter(c=>c.k!=="all");let n=0,bad=[];
+  $("f_bulk").value.split("\n").map(l=>l.trim()).filter(Boolean).forEach(l=>{const [nm,pr,ct,un]=l.split("|").map(x=>x.trim());const p=num(pr);if(!nm||p===undefined){bad.push(l);return}
+   const c=cats.find(c=>c.k===(ct||"").toLowerCase()||c.en.toLowerCase()===(ct||"").toLowerCase());S.custom.push({id:newId(),en:nm,bn:nm,cat:c?c.k:"pantry",u:units.includes((un||"").toLowerCase())?un.toLowerCase():"pc",p,e:"🛒"});n++});
+  if(!n){err("Nothing to add. Use: Name | price | category | unit");return}
+  commit();$("pd").close();cat="__mine";vProducts();if(bad.length)alert(n+" added. These lines were skipped:\n"+bad.join("\n"));return}
+ const en=$("f_en").value.trim(),p=num($("f_p").value);if(!en)return err("Please enter the English name.");if(p===undefined)return err("Please enter a price.");
+ const c=editCi==null?{id:newId()}:S.custom[editCi];
+ Object.assign(c,{en,bn:$("f_bn").value.trim()||en,cat:$("f_cat").value,u:$("f_u").value,p,e:$("f_e").value.trim()||"🛒",szm:$("f_sz").value,g:$("f_g").value.trim()});
+ ["old","stock"].forEach(k=>{const v=num($("f_"+k).value);if(v===undefined)delete c[k];else c[k]=v});
+ if(!c.szm)delete c.szm;if(!c.g)delete c.g;
+ const url=$("f_img").value.trim();if(url){c.img=url;delete c.photo}else if(!$("f_file").files[0])delete c.img;
+ const f=$("f_file").files[0];if(f){try{$("pdsave").disabled=true;await KFM.putPhoto(c.id,await resize(f));c.photo=Date.now();delete c.img}catch(e){$("pdsave").disabled=false;return err("Photo upload failed: "+e.message)}$("pdsave").disabled=false}
+ if(editCi==null)S.custom.push(c);commit();$("pd").close();cat="__mine";vProducts()}
+function photoCsv(){const r=[["id","name","category","image file name to put in the images folder"]].concat(KFM_PRODUCTS.map(p=>[p.id,p.en,p.cat,p.img||p.id+".jpg"]));dl("photo-checklist.csv",r.map(x=>x.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(",")).join("\n"))}
+function resize(file,max=560){return new Promise(r=>{const im=new Image();im.onload=()=>{const k=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext("2d").drawImage(im,0,0,c.width,c.height);r(c.toDataURL("image/jpeg",.8))};im.src=URL.createObjectURL(file)})}
+$("file").onchange=async e=>{const f=e.target.files[0];e.target.value="";if(!f||!photoFor)return;$("st").textContent="Uploading photo…";try{const d=await resize(f),id=photoFor.id||S.custom[photoFor.ci].id;await KFM.putPhoto(id,d);const o=photoFor.id?(S.products[id]=S.products[id]||{}):S.custom[photoFor.ci];o.photo=Date.now();commit();rows()}catch(err){$("st").textContent="Photo failed: "+err.message}};
+
+/* ---- offers ---- */
+function vOffers(){const o=S.offer;$("main").innerHTML=`<div class="card"><h2>Store-wide sale</h2><p class="mut">Shows in the top banner and is taken off every basket automatically (a coupon is used instead if it gives a bigger discount).</p><div class="grid2"><div><label>Discount %</label><input data-of="pct" type="number" min="0" max="90" value="${esc(o.pct||"")}"></div><div><label>Label</label><input data-of="label" value="${esc(o.label||"")}" placeholder="Eid Sale"></div><div><label>Ends on</label><input data-of="end" type="date" value="${esc(o.end||"")}"></div></div></div>
+<div class="card"><h2>Coupon codes</h2><div class="tw"><table><thead><tr><th>Code</th><th>% off</th><th>or ৳ off</th><th>Min basket ৳</th><th></th></tr></thead><tbody>${Object.keys(S.coupons).map(k=>{const c=S.coupons[k];return `<tr><td><b>${esc(k)}</b></td><td><input data-cp="${esc(k)}" data-cf="pct" value="${esc(c.pct||"")}"></td><td><input data-cp="${esc(k)}" data-cf="off" value="${esc(c.off||"")}"></td><td><input data-cp="${esc(k)}" data-cf="min" value="${esc(c.min||"")}"></td><td><button class="btn alt sm" data-cdel="${esc(k)}">Delete</button></td></tr>`}).join("")}</tbody></table></div><p><button class="btn alt sm" id="cadd">+ Add coupon</button></p></div>`;$("cadd").onclick=()=>{const k=(prompt("Coupon code (letters and numbers):")||"").trim().toUpperCase().replace(/[^A-Z0-9]/g,"");if(!k)return;S.coupons[k]={pct:10,min:0};commit();vOffers()}}
+
+/* ---- settings ---- */
+const FIELDS=[["announce","Top banner text (empty = default)"],["whatsapp","WhatsApp number (880…, no +)"],["phone","Phone shown on site"],["address","Shop address"],["hours","Opening hours text"],["openHour","Opens at (hour 0-23)","number"],["closeHour","Closes at (hour 0-23)","number"],["deliveryFee","Delivery fee ৳","number"],["freeOver","Free delivery over ৳","number"],["expressFee","Express fee ৳","number"],["nagad","Nagad number"],["bkash","bKash number"],["rocket","Rocket number"],["upay","Upay number"],["bank","Bank details (name · A/C name · A/C no · branch)"],["cardPayUrl","Card payment link from your bank/gateway (use {amount} for the total)"],["facebook","Facebook page link (https://…)"],["instagram","Instagram link (https://…)"],["tiktok","TikTok link (https://…)"],["youtube","YouTube link (https://…)"]];
+function vSettings(){$("main").innerHTML=`<div class="card"><h2>Store settings</h2><p class="mut">Payment methods only appear on the public site once you fill in their number or details.</p><div class="grid2">${FIELDS.map(f=>`<div><label>${f[1]}</label><input data-set="${f[0]}" type="${f[2]||"text"}" value="${esc(S.settings[f[0]]==null?"":S.settings[f[0]])}"></div>`).join("")}</div></div>`}
+
+/* ---- reviews ---- */
+async function vReviews(){$("main").innerHTML='<div class="card"><h2>Waiting for approval</h2><div id="rp" class="mut">Loading…</div></div><div class="card"><h2>Shown on the public site</h2><div id="ra"></div></div>';try{PEND=await KFM.pending()}catch(e){PEND=[];$("rp").textContent="Could not load: "+e.message;return}drawRev()}
+function drawRev(){if(tab!=="reviews")return;$("rp").innerHTML=PEND.length?PEND.map(r=>`<p><b>${"★".repeat(r.rating||r.r||0)}</b> ${esc(r.name||r.n)} – ${esc(r.comment||r.en||"")}<br><button class="btn sm" data-rok="${esc(r.id)}">Approve</button> <button class="btn alt sm" data-rno="${esc(r.id)}">Delete</button></p>`).join(""):"No reviews waiting.";
+ $("ra").innerHTML=S.reviews.length?S.reviews.map((r,i)=>`<p><b>${"★".repeat(r.r)}</b> ${esc(r.n)} – ${esc(r.en)} <button class="btn alt sm" data-rrm="${i}">Remove</button></p>`).join(""):'<span class="mut">None yet.</span>'}
+
+/* ---- one handler for every edit ---- */
+const M=$("main");
+M.addEventListener("change",e=>{const t=e.target,d=t.dataset;
+ if(d.oid){KFM.setOrder(d.oid,{status:t.value}).then(loadOrders).catch(x=>$("st").textContent="Failed: "+x.message);return}
+ if(d.f){const tgt=d.id?(S.products[d.id]=S.products[d.id]||{}):S.custom[+d.ci];let v=t.type==="checkbox"?t.checked:t.value.trim();
+  if(["p","old","stock"].includes(d.f)&&typeof v==="string"&&v!=="")v=Number(v);
+  if(v===""||v===false)delete tgt[d.f];else tgt[d.f]=v;commit();return}
+ if(d.set){S.settings[d.set]=t.type==="number"&&t.value!==""?Number(t.value):t.value.trim();commit();return}
+ if(d.of){S.offer[d.of]=d.of==="pct"?Number(t.value)||0:t.value;commit();return}
+ if(d.cp){const c=S.coupons[d.cp];const v=Number(t.value)||0;if(v)c[d.cf]=v;else delete c[d.cf];commit()}});
+M.addEventListener("click",async e=>{const d=e.target.dataset;
+ if(d.photo){photoFor=d.id?{id:d.id}:{ci:+d.ci};const u=prompt("Paste a photo link (https://…) or press Cancel to choose a file from your device:");if(u){if(d.id){(S.products[d.id]=S.products[d.id]||{}).img=u;delete S.products[d.id].photo}else{S.custom[+d.ci].img=u;delete S.custom[+d.ci].photo}commit();rows()}else $("file").click()}
+ else if(d.edit){openForm(+d.ci)}
+ else if(d.bdel){if(confirm("Delete this product from the shop? You can restore it later from 'Deleted products'.")){const o=S.products[d.id]=S.products[d.id]||{};o.hidden=true;o.deleted=true;commit();rows()}}
+ else if(d.restore){const o=S.products[d.id]||{};delete o.deleted;delete o.hidden;commit();rows()}
+ else if(d.delsel){const ids=[...document.querySelectorAll("[data-sel]:checked")].map(c=>c.dataset.sel);if(!ids.length){alert("Tick the products you want to delete first.");return}
+  if(!confirm("Delete "+ids.length+" product(s)? Built-in products can be restored later; products you added are removed for good."))return;
+  ids.filter(i=>i.startsWith("c:")).map(i=>+i.slice(2)).sort((x,y)=>y-x).forEach(i=>S.custom.splice(i,1));
+  ids.filter(i=>!i.startsWith("c:")).forEach(id=>{const o=S.products[id]=S.products[id]||{};o.hidden=true;o.deleted=true});commit();rows()}
+ else if(e.target.id==="selall"){document.querySelectorAll("[data-sel]").forEach(c=>c.checked=e.target.checked)}
+ else if(d.reset){delete S.products[d.id];commit();rows()}
+ else if(d.del){if(confirm("Delete this product for good?")){S.custom.splice(+d.ci,1);commit();rows()}}
+ else if(d.cdel){delete S.coupons[d.cdel];commit();vOffers()}
+ else if(d.rok){const r=PEND.find(x=>x.id===d.rok);S.reviews.push({n:r.name||r.n,r:r.rating||r.r||5,en:r.comment||r.en||"",bn:r.comment||r.en||""});await KFM.delPending(d.rok);commit();vReviews()}
+ else if(d.rno){await KFM.delPending(d.rno);vReviews()}
+ else if(d.rrm){S.reviews.splice(+d.rrm,1);commit();drawRev()}});
+</script></body></html>
