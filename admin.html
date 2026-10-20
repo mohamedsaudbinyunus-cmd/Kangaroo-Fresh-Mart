@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="robots" content="noindex,nofollow">
+<meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#1d6a33"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" type="image/png" href="icon-192.png"><link rel="manifest" href="admin-manifest.json"><meta name="apple-mobile-web-app-title" content="KFM Admin">
 <title>Kangaroo Fresh Mart – Admin</title>
 <style>
 :root{--g:#1d6a33;--o:#f0821a;--ink:#14261a;--mut:#5d6b60;--line:#dfe7dc;--bg:#f4f7f1;--card:#fff}
@@ -56,6 +56,15 @@ dialog::backdrop{background:rgba(8,30,18,.5);backdrop-filter:blur(5px)}
 .dlg .acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;position:sticky;bottom:0;background:#fff;padding:10px 0}
 .hint{font-size:12.5px;color:var(--mut);margin-top:3px}
 .tabs2{display:flex;gap:6px;margin:10px 0 4px}.tabs2 button{flex:1;border:1px solid var(--line);background:#fff;border-radius:12px;padding:9px;font:inherit;cursor:pointer}.tabs2 button.on{background:#eef7e2;border-color:var(--g);font-weight:700}
+
+.pills{display:flex;gap:8px;overflow-x:auto;padding:4px 0;-webkit-overflow-scrolling:touch}
+.pill{flex:0 0 auto;border:1.5px solid var(--line);background:#fff;border-radius:12px;padding:9px 16px;font:inherit;font-weight:600;color:var(--ink);cursor:pointer;white-space:nowrap}
+.pill.on{background:#d63a33;border-color:#d63a33;color:#fff}.pill.add{border-style:dashed;color:var(--g)}
+.opills .pill{flex:1 1 0}
+.mnav{display:flex;align-items:center;justify-content:space-between;background:#fbf9f4;border-bottom:1px solid var(--line)}
+.mnav button{border:0;background:none;font-size:30px;line-height:1;padding:10px 18px;cursor:pointer;color:var(--ink)}.mnav button:disabled{color:#bbb;cursor:default}.mnav b{font-size:19px}
+.nb{background:#e53935;color:#fff;border-radius:99px;font-size:12px;font-weight:700;padding:1px 7px;margin-left:6px}
+#toast{position:fixed;left:50%;transform:translateX(-50%);top:calc(10px + env(safe-area-inset-top));z-index:50;background:#d63a33;color:#fff;border-radius:14px;padding:12px 18px;box-shadow:0 10px 30px rgba(0,0,0,.3);font-weight:700;cursor:pointer;max-width:92vw}
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
 </head><body>
@@ -70,10 +79,11 @@ dialog::backdrop{background:rgba(8,30,18,.5);backdrop-filter:blur(5px)}
 </section>
 
 <div id="app" hidden>
-<header><h1>🦘 Kangaroo Fresh Mart · Admin</h1><span class="badge" id="mode"></span><span class="badge" id="st">Ready</span><a href="index.html" target="_blank" rel="noopener">Open public site ↗</a><button class="btn alt sm" id="out">Sign out</button></header>
+<header><h1>🦘 Kangaroo Fresh Mart · Admin</h1><span class="badge" id="mode"></span><button class="btn alt sm" id="bell">🔔 Alerts</button><span class="badge" id="st">Ready</span><a href="index.html" target="_blank" rel="noopener">Open public site ↗</a><button class="btn alt sm" id="out">Sign out</button></header>
 <div id="warn" hidden style="margin:10px 12px 0;padding:12px 14px;border-radius:14px;font-size:14px"></div>
 <nav id="tabs"></nav>
 <main id="main"></main>
+<div id="toast" hidden></div>
 </div>
 <input type="file" id="file" accept="image/*" hidden>
 <dialog id="pd"><div class="dlg">
@@ -81,7 +91,7 @@ dialog::backdrop{background:rgba(8,30,18,.5);backdrop-filter:blur(5px)}
  <div class="tabs2" id="pdtabs"><button data-pm="one" class="on">One product</button><button data-pm="bulk">Many at once</button></div>
  <div id="pone">
   <div class="row2"><div><label>Name (English) *</label><input id="f_en" placeholder="e.g. Fresh Guava"></div><div><label>Name (বাংলা)</label><input id="f_bn" placeholder="যেমন: তাজা পেয়ারা"></div></div>
-  <div class="row2"><div><label>Category *</label><select id="f_cat"></select></div><div><label>Sold per *</label><select id="f_u"><option value="kg">per kg</option><option value="pc">each (piece)</option><option value="pack">per pack</option><option value="dozen">per dozen</option><option value="l">per litre</option><option value="bunch">per bunch</option><option value="g500">per 500 g</option></select></div></div>
+  <div class="row2"><div><label>Category *</label><select id="f_cat"></select></div><div><label>Sold per *</label><select id="f_u"><option value="kg">per kg</option><option value="pc">each (piece)</option><option value="pack">per pack</option><option value="dozen">per dozen</option><option value="l">per litre</option><option value="bunch">per bunch</option><option value="g500">per 500 g</option></select></div></div><div id="newcat" hidden class="card" style="margin:8px 0;padding:12px"><div class="row2"><div><label>New category name (English) *</label><input id="nc_en" placeholder="e.g. Stationery"></div><div><label>বাংলা নাম (optional)</label><input id="nc_bn" placeholder="যেমন: স্টেশনারি"></div></div><div class="row2"><div><label>Emoji (shown on the shop)</label><input id="nc_e" value="🛒" maxlength="4"></div><div></div></div></div>
   <div class="row2"><div><label>Price ৳ *</label><input id="f_p" inputmode="decimal"></div><div><label>Old price ৳ (shows a discount)</label><input id="f_old" inputmode="decimal"></div></div>
   <div class="row2"><div><label>Stock (empty = no limit, 0 = sold out)</label><input id="f_stock" inputmode="numeric"></div><div><label>Emoji (shown until you add a photo)</label><input id="f_e" value="🛒" maxlength="4"></div></div>
   <label>Small / Medium / Big buttons</label><select id="f_sz"><option value="">No size choice</option><option value="size">Small / Medium / Big (fresh items: -15% / listed price / +20%)</option><option value="pack">Small / Medium / Big (packs and bottles: -45% / listed price / +80%)</option></select>
@@ -90,7 +100,7 @@ dialog::backdrop{background:rgba(8,30,18,.5);backdrop-filter:blur(5px)}
   <p class="hint">Use photos you took yourself or have the right to use.</p>
  </div>
  <div id="pbulk" hidden>
-  <p class="mut">One product per line: <b>Name | price | category | unit</b>. Category and unit are optional (category can be a name like Fruit or a key like fruit; unit: kg, pc, pack, dozen, l, bunch).</p>
+  <p class="mut">One product per line: <b>Name | price | category | unit</b>. Category and unit are optional (category can be a name like Fruit or a key like fruit; a category name that does not exist yet is created automatically; unit: kg, pc, pack, dozen, l, bunch).</p>
   <textarea id="f_bulk" rows="9" placeholder="Fresh Guava | 120 | fruit | kg&#10;Green Tea Box | 180 | snacks | pack&#10;Brown Eggs | 150 | dairy | dozen"></textarea>
   <p class="hint" id="bulkinfo"></p>
  </div>
@@ -105,7 +115,7 @@ dialog::backdrop{background:rgba(8,30,18,.5);backdrop-filter:blur(5px)}
 window.KFM_CONFIG={
   firebaseUrl:"https://kangaroo-fresh-mart-f77fb-default-rtdb.firebaseio.com/",   // e.g. "https://your-project-default-rtdb.firebaseio.com"
   apiKey:"AIzaSyDodXN3fyUBpybYvq7ko_ziNlXT0snKjs0",        // Firebase "Web API key" (needed for the admin login)
-  localPin:"1234"     // LOCAL mode only: choose a PIN for admin.html (it is stored in this file, so it is NOT real security)
+  localPin:""     // LOCAL mode only: choose a PIN for admin.html (it is stored in this file, so it is NOT real security)
 };
 
 </script><script>
@@ -505,6 +515,8 @@ const KFM_PRODUCTS=[
 const $=id=>document.getElementById(id),esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const TABS=[["orders","📦 Orders"],["products","🛒 Products & photos"],["offers","🏷 Offers & coupons"],["settings","⚙ Store settings"],["reviews","⭐ Reviews"]];
 let S={},tab="orders",shown=60,q="",cat="all",ORD=[],PEND=[],tm,photoFor=null;
+const MN=["January","February","March","April","May","June","July","August","September","October","November","December"];
+let om=(()=>{const d=new Date();return d.getFullYear()*12+d.getMonth()})(),of="all";
 const BASE={};KFM_PRODUCTS.forEach(p=>BASE[p.id]=p);
 const money=n=>"৳"+Math.round(+n||0).toLocaleString();
 
@@ -518,55 +530,94 @@ if(KFM.isAdmin())boot();
 
 async function boot(){
   $("login").hidden=true;$("app").hidden=false;$("mode").textContent=KFM.mode==="cloud"?"☁ Cloud":"💻 Local";
-  S=await KFM.store();["products","settings","offer","coupons"].forEach(k=>S[k]=S[k]||{});["custom","reviews"].forEach(k=>S[k]=S[k]||[]);
+  S=await KFM.store();["products","settings","offer","coupons"].forEach(k=>S[k]=S[k]||{});["custom","reviews","cats"].forEach(k=>S[k]=S[k]||[]);
   const hosted=/^https?:$/.test(location.protocol)&&!/^(localhost|127\.0\.0\.1)$/.test(location.hostname);
   if(KFM.mode==="local"){const w=$("warn");w.hidden=false;w.style.background=hosted?"#fdecea":"#fff6dc";w.style.color=hosted?"#9b1c12":"#7a5600";w.innerHTML=hosted?"<b>⚠ Changes will NOT reach your customers.</b> This site is published in Local mode, so each visitor only sees their own browser's data. Set up Cloud mode (kfm-config.js, see SETUP.txt) so everything you add or delete goes live for everyone.":"<b>Local test mode.</b> Changes show only in this browser. To make them live for all customers, set up Cloud mode (SETUP.txt) before publishing."}
-  $("tabs").innerHTML=TABS.map(t=>`<button data-t="${t[0]}">${t[1]}</button>`).join("");
-  go("orders");setInterval(()=>{if(tab==="orders")loadOrders()},10000);
+  $("tabs").innerHTML=TABS.map(t=>`<button data-t="${t[0]}">${t[1]}${t[0]==="orders"?'<span class="nb" id="nb" hidden></span>':""}</button>`).join("");
+  go("orders");initAlerts();pollOrders();setInterval(pollOrders,15000);
 }
 function go(t){tab=t;document.querySelectorAll("#tabs button").forEach(b=>b.classList.toggle("on",b.dataset.t===t));({orders:vOrders,products:vProducts,offers:vOffers,settings:vSettings,reviews:vReviews})[t]()}
 $("tabs").onclick=e=>{if(e.target.dataset.t)go(e.target.dataset.t)};
 function commit(){$("st").textContent="Saving…";clearTimeout(tm);tm=setTimeout(async()=>{try{await KFM.saveStore(S);$("st").textContent=KFM.mode==="cloud"?"Published ✓ live for everyone":"Saved (this browser only)"}catch(e){$("st").textContent="Save failed: "+e.message}},500)}
 
 /* ---- orders ---- */
-function vOrders(){$("main").innerHTML='<div class="stats" id="ost"></div><div class="card"><h2>Orders <button class="btn alt sm" id="oref">Refresh</button> <button class="btn alt sm" id="ocsv">Export CSV</button></h2><div class="tw"><table><thead><tr><th>Date</th><th>Customer</th><th>Total</th><th>Payment</th><th>Items</th><th>Status</th></tr></thead><tbody id="obody"></tbody></table></div><p class="mut" id="onone"></p></div>';$("oref").onclick=loadOrders;$("ocsv").onclick=ordersCsv;loadOrders()}
-async function loadOrders(){try{ORD=(await KFM.orders()).sort((a,b)=>(b.created||0)-(a.created||0))}catch(e){ORD=[];if($("onone"))$("onone").textContent="Could not load orders: "+e.message}drawOrders()}
-function drawOrders(){if(tab!=="orders"||!$("obody"))return;const paid=ORD.filter(o=>o.status==="Paid"||o.status==="Delivered");
- $("ost").innerHTML=`<div><b>${ORD.length}</b>Orders</div><div><b>${ORD.filter(o=>o.status==="Pending").length}</b>Pending</div><div><b>${money(paid.reduce((a,o)=>a+(+o.total||0),0))}</b>Paid / delivered</div>`;
- $("obody").innerHTML=ORD.map(o=>`<tr><td>${new Date(o.created||0).toLocaleString()}<br><span class="mut">${esc(o.orderno||o.id)}</span></td><td>${esc(o.name||"")}<br><span class="mut">${esc(o.phone||"")}</span><br><span class="mut">${esc(o.address||"")}</span><br><span class="mut">${esc((o.mode||"")+" · "+(o.when||""))}</span></td><td><b>${money(o.total)}</b></td><td>${esc(o.payment||"")}<br><span class="mut">${esc(o.trxid||"")}</span></td><td class="mut">${esc(o.items||"").replace(/\n/g,"<br>")}</td><td><select data-oid="${esc(o.id)}">${["Pending","Paid","Delivered","Cancelled"].map(s=>`<option${s===o.status?" selected":""}>${s}</option>`).join("")}</select></td></tr>`).join("");
- $("onone").textContent=ORD.length?"":"No orders yet. New orders from the public site appear here."}
-function ordersCsv(){const rows=[["date","order","name","phone","address","total","payment","trx","status"]].concat(ORD.map(o=>[new Date(o.created||0).toISOString(),o.orderno||o.id,o.name,o.phone,o.address,o.total,o.payment,o.trxid,o.status]));dl("orders.csv",rows.map(r=>r.map(c=>'"'+String(c==null?"":c).replace(/"/g,'""')+'"').join(",")).join("\n"))}
+function mk(o){const d=new Date(o.created||0);return d.getFullYear()*12+d.getMonth()}
+function curList(){return ORD.filter(o=>mk(o)===om&&(of==="all"||o.status===of))}
+function vOrders(){$("main").innerHTML='<div class="card" style="padding:0;overflow:hidden"><div class="mnav"><button id="mprev" aria-label="Previous month">‹</button><b id="mlabel"></b><button id="mnext" aria-label="Next month">›</button></div><div class="pills opills" id="opills" style="padding:12px"></div></div><div class="stats" id="ost"></div><div class="card"><h2>Orders <button class="btn alt sm" id="oref">Refresh</button> <button class="btn alt sm" id="ocsv">Export this month (CSV)</button></h2><div class="tw"><table><thead><tr><th>Date</th><th>Customer</th><th>Total</th><th>Payment</th><th>Items</th><th>Status</th></tr></thead><tbody id="obody"></tbody></table></div><p class="mut" id="onone"></p></div><details class="card"><summary><b>All months summary</b></summary><div class="tw"><table><thead><tr><th>Month</th><th>Orders</th><th>Paid / delivered ৳</th></tr></thead><tbody id="msum"></tbody></table></div></details>';
+ const nowm=(()=>{const d=new Date();return d.getFullYear()*12+d.getMonth()})();
+ $("mprev").onclick=()=>{om--;drawOrders()};$("mnext").onclick=()=>{if(om<nowm){om++;drawOrders()}};
+ $("opills").onclick=e=>{const s=e.target.dataset.of;if(s!=null){of=s;drawOrders()}};
+ $("oref").onclick=pollOrders;$("ocsv").onclick=ordersCsv;drawOrders();pollOrders()}
+async function loadOrders(){return pollOrders()}
+function isPaid(o){return o.status==="Paid"||o.status==="Delivered"}
+function drawOrders(){if(tab!=="orders"||!$("obody"))return;
+ const nowm=(()=>{const d=new Date();return d.getFullYear()*12+d.getMonth()})();
+ $("mlabel").textContent=MN[om%12]+", "+Math.floor(om/12);$("mnext").disabled=om>=nowm;
+ const inM=ORD.filter(o=>mk(o)===om),list=curList();
+ $("opills").innerHTML=[["all","All"],["Pending","Pending"],["Paid","Paid"],["Delivered","Delivered"],["Cancelled","Cancelled"]].map(([k,t])=>`<button class="pill${of===k?" on":""}" data-of="${k}">${t} (${k==="all"?inM.length:inM.filter(o=>o.status===k).length})</button>`).join("");
+ const paid=inM.filter(isPaid);
+ $("ost").innerHTML=`<div><b>${inM.length}</b>Orders this month</div><div><b>${inM.filter(o=>o.status==="Pending").length}</b>Pending</div><div><b>${money(paid.reduce((x,o)=>x+(+o.total||0),0))}</b>Paid / delivered</div>`;
+ $("obody").innerHTML=list.map(o=>`<tr><td>${new Date(o.created||0).toLocaleString()}<br><span class="mut">${esc(o.orderno||o.id)}</span></td><td>${esc(o.name||"")}<br><span class="mut">${esc(o.phone||"")}</span><br><span class="mut">${esc(o.address||"")}</span><br><span class="mut">${esc((o.mode||"")+" · "+(o.when||""))}</span></td><td><b>${money(o.total)}</b></td><td>${esc(o.payment||"")}<br><span class="mut">${esc(o.trxid||"")}</span></td><td class="mut">${esc(o.items||"").replace(/\n/g,"<br>")}</td><td><select data-oid="${esc(o.id)}">${["Pending","Paid","Delivered","Cancelled"].map(s=>`<option${s===o.status?" selected":""}>${s}</option>`).join("")}</select></td></tr>`).join("");
+ $("onone").textContent=list.length?"":(ORD.length?"No orders for this month / filter.":"No orders yet. New orders from the public site appear here.");
+ const mm={};ORD.forEach(o=>{const k=mk(o);(mm[k]=mm[k]||{n:0,t:0}).n++;if(isPaid(o))mm[k].t+=+o.total||0});
+ $("msum").innerHTML=Object.keys(mm).sort((x,y)=>y-x).map(k=>`<tr><td>${MN[k%12]}, ${Math.floor(k/12)}</td><td>${mm[k].n}</td><td>${money(mm[k].t)}</td></tr>`).join("")||'<tr><td colspan="3" class="mut">No orders yet</td></tr>'}
+function ordersCsv(){const rows=[["date","order","name","phone","address","total","payment","trx","status"]].concat(curList().map(o=>[new Date(o.created||0).toISOString(),o.orderno||o.id,o.name,o.phone,o.address,o.total,o.payment,o.trxid,o.status]));dl("orders-"+Math.floor(om/12)+"-"+String(om%12+1).padStart(2,"0")+".csv",rows.map(r=>r.map(c=>'"'+String(c==null?"":c).replace(/"/g,'""')+'"').join(",")).join("\n"))}
+
+/* ---- new-order alerts ---- */
+let lastSeen=+(localStorage.getItem("kfm_lastseen")||0),polled=false,AC=null;
+function ac(){try{return AC||(AC=new(window.AudioContext||window.webkitAudioContext)())}catch(e){return null}}
+function beep(){const c=ac();if(!c)return;try{c.resume();[880,1175,880,1175].forEach((f,k)=>{const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=f;g.gain.value=.18;o.start(c.currentTime+k*.2);o.stop(c.currentTime+k*.2+.15)})}catch(e){}}
+function toast(t,fn){const el=$("toast");el.textContent=t;el.hidden=false;el.onclick=()=>{el.hidden=true;fn&&fn()};clearTimeout(toast.t);toast.t=setTimeout(()=>el.hidden=true,20000)}
+function sysNote(title,body){try{if(!("Notification"in window)||Notification.permission!=="granted")return;if(navigator.serviceWorker&&navigator.serviceWorker.ready)navigator.serviceWorker.ready.then(r=>r.showNotification(title,{body,icon:"icon-192.png",badge:"icon-192.png",tag:"kfm-order"})).catch(()=>{try{new Notification(title,{body,icon:"icon-192.png"})}catch(e){}});else new Notification(title,{body,icon:"icon-192.png"})}catch(e){}}
+function alertNew(f){const o=f[0],t=f.length>1?"🛒 "+f.length+" new orders!":"🛒 New order: "+(o.name||"customer")+" · "+money(o.total);beep();try{navigator.vibrate&&navigator.vibrate([200,100,200])}catch(e){}toast(t,()=>{om=mk(o);of="all";go("orders")});sysNote("Kangaroo Fresh Mart",t)}
+function updateBadge(){const n=ORD.filter(o=>o.status==="Pending").length,b=$("nb");if(b){b.hidden=!n;b.textContent=n}document.title=(n?"("+n+") ":"")+"Kangaroo Fresh Mart – Admin";try{if(n)navigator.setAppBadge&&navigator.setAppBadge(n);else navigator.clearAppBadge&&navigator.clearAppBadge()}catch(e){}}
+async function pollOrders(){let r;try{r=(await KFM.orders()).sort((a,b)=>(b.created||0)-(a.created||0))}catch(e){if($("onone"))$("onone").textContent="Could not load orders: "+e.message;return}
+ ORD=r;const mx=ORD.reduce((a,o)=>Math.max(a,o.created||0),0);
+ if(!polled){polled=true;if(!lastSeen){lastSeen=mx;localStorage.setItem("kfm_lastseen",mx)}}
+ const fresh=ORD.filter(o=>(o.created||0)>lastSeen);
+ if(fresh.length){lastSeen=mx;localStorage.setItem("kfm_lastseen",mx);alertNew(fresh)}
+ updateBadge();drawOrders()}
+function bellLabel(){const b=$("bell");if(!b)return;b.textContent=("Notification"in window&&Notification.permission==="granted")?"🔔 Alerts on":"🔔 Enable alerts"}
+function initAlerts(){bellLabel();if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
+ document.addEventListener("pointerdown",()=>{const c=ac();c&&c.resume&&c.resume()},{once:true});
+ $("bell").onclick=async()=>{beep();if("Notification"in window&&Notification.permission==="default"){try{await Notification.requestPermission()}catch(e){}}bellLabel();toast("🔔 Test alert – you will hear this sound for every new order while this page is open.")}}
 function dl(n,t){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([t],{type:"text/csv"}));a.download=n;a.click()}
 
 /* ---- products ---- */
 function vProducts(){
- $("main").innerHTML=`<div class="card"><h2>Products &amp; photos</h2><p class="mut">Change a price, stock, name, or photo and it goes live on the public site. Leave a box empty to use the original value. Stock 0 shows "Sold out".</p><div class="grid2"><div><label>Search</label><input id="pq" value="${esc(q)}" placeholder="name…"></div><div><label>Category</label><select id="pc"><option value="all">All</option><option value="__mine"${cat==="__mine"?" selected":""}>★ My added products</option><option value="__del"${cat==="__del"?" selected":""}>🗑 Deleted products (restore)</option>${KFM_CATS.filter(c=>c.k!=="all").map(c=>`<option value="${c.k}"${c.k===cat?" selected":""}>${esc(c.en)}</option>`).join("")}</select></div></div> <p><button class="btn alt sm" id="addp">+ Add new product</button> <button class="btn alt sm" id="pcsv">Photo checklist (CSV)</button> <button class="btn alt sm" data-delsel="1" style="color:#b3261e">Delete selected</button></p></div><div class="card tw"><table><thead><tr><th><input type="checkbox" id="selall" style="min-width:0;width:auto" title="Select all shown"></th><th>Photo</th><th>Name</th><th>Price ৳</th><th>Old price ৳</th><th>Stock</th><th>Hide</th><th></th></tr></thead><tbody id="pb"></tbody></table><p><button class="btn alt" id="more">Show more</button></p></div>`;
- $("pq").oninput=e=>{q=e.target.value;shown=60;rows()};$("pc").onchange=e=>{cat=e.target.value;shown=60;rows()};$("more").onclick=()=>{shown+=60;rows()};$("addp").onclick=()=>openForm();$("pcsv").onclick=photoCsv;rows()}
+ $("main").innerHTML=`<div class="card"><h2>Products &amp; photos</h2><p class="mut">Change a price, stock, name, or photo and it goes live on the public site. Leave a box empty to use the original value. Stock 0 shows "Sold out".</p><div class="grid2"><div><label>Search</label><input id="pq" value="${esc(q)}" placeholder="name…"></div><div><label>Category</label><select id="pc"><option value="all">All</option><option value="__mine"${cat==="__mine"?" selected":""}>★ My added products</option><option value="__del"${cat==="__del"?" selected":""}>🗑 Deleted products (restore)</option>${allCats().map(c=>`<option value="${c.k}"${c.k===cat?" selected":""}>${esc(c.en)}</option>`).join("")}</select></div></div><div class="pills" id="cpills" style="margin:10px 0 4px"></div><div id="catform" hidden class="card" style="margin:6px 0;padding:12px"><div class="grid2"><div><label>New category name (English) *</label><input id="ncat_en" placeholder="e.g. Stationery"></div><div><label>বাংলা নাম (optional)</label><input id="ncat_bn"></div></div><p><label>Emoji</label> <input id="ncat_e" value="🛒" maxlength="4" style="width:80px;min-width:0"> <button class="btn sm" id="ncat_add">Add category</button> <button class="btn alt sm" id="ncat_x">Cancel</button></p></div> <p><button class="btn alt sm" id="addp">+ Add new product</button> <button class="btn alt sm" id="pcsv">Photo checklist (CSV)</button> <button class="btn alt sm" data-delsel="1" style="color:#b3261e">Delete selected</button></p><p class="mut" id="mycats"></p></div><div class="card tw"><table><thead><tr><th><input type="checkbox" id="selall" style="min-width:0;width:auto" title="Select all shown"></th><th>Photo</th><th>Name</th><th>Price ৳</th><th>Old price ৳</th><th>Stock</th><th>Hide</th><th></th></tr></thead><tbody id="pb"></tbody></table><p><button class="btn alt" id="more">Show more</button></p></div>`;
+ $("pq").oninput=e=>{q=e.target.value;shown=60;rows()};$("pc").onchange=e=>{cat=e.target.value;shown=60;rows();drawPills()};$("ncat_x").onclick=()=>$("catform").hidden=true;$("ncat_add").onclick=()=>{const en=$("ncat_en").value.trim();if(!en)return alert("Please type the category name.");const k=addCat(en,$("ncat_bn").value.trim(),$("ncat_e").value.trim());cat=k;commit();vProducts()};$("cpills").onclick=e=>{const d=e.target.dataset;if(d.addcat){$("catform").hidden=false;$("ncat_en").focus();return}if(d.pcat!=null){cat=d.pcat;shown=60;$("pc").value=cat;rows();drawPills()}};drawPills();$("more").onclick=()=>{shown+=60;rows()};$("addp").onclick=()=>openForm();$("pcsv").onclick=photoCsv;drawCats();rows()}
 function thumb(p,o){const u=o.photo?null:(o.img||p.img);const src=o.img?o.img:(p.img&&!o.photo?(/^(https?:|data:)/.test(p.img)?p.img:"images/"+p.img):"");return `<div class="th" data-th="${p.id}">${o.photo?"🖼":(p.e||"🛒")}${src?`<img src="${esc(src)}" alt="" onerror="this.remove()">`:""}</div>`}
 function rows(){const t=q.toLowerCase(),all=KFM_PRODUCTS.filter(p=>cat!=="__mine"&&((S.products[p.id]||{}).deleted?cat==="__del":cat!=="__del")&&(cat==="all"||cat==="__del"||p.cat===cat)&&(!t||(p.en+" "+(p.bn||"")+" "+p.id).toLowerCase().includes(t))).map(p=>({p,base:true})).concat(S.custom.map((c,i)=>({p:c,i,custom:true})).filter(x=>cat!=="__del"&&(cat==="all"||cat==="__mine"||x.p.cat===cat)&&(!t||x.p.en.toLowerCase().includes(t))));all.sort((a,b)=>(b.custom?1:0)-(a.custom?1:0));
  $("more").hidden=all.length<=shown;
  $("pb").innerHTML=all.slice(0,shown).map(x=>{const p=x.p,o=x.base?(S.products[p.id]||{}):p,d=x.base?`data-id="${p.id}"`:`data-ci="${x.i}"`;
   const f=(k,ph,w)=>`<input ${w?'class="w" ':''}${d} data-f="${k}" value="${esc(o[k]==null?"":o[k])}" placeholder="${esc(ph==null?"":ph)}"${k==="en"||k==="bn"?"":' inputmode="decimal"'}>`;
   return `<tr><td><input type="checkbox" data-sel="${x.base?p.id:"c:"+x.i}" style="min-width:0;width:auto"></td><td>${thumb(p,o)}<button class="btn alt sm" ${d} data-photo="1">📷</button></td><td>${f("en",p.en,1)}</td><td>${f("p",x.base?p.p:"")}</td><td>${f("old",x.base?(p.old||""):"")}</td><td>${f("stock","∞")}</td><td><input type="checkbox" ${d} data-f="hidden"${o.hidden?" checked":""} style="min-width:0;width:auto"></td><td style="white-space:nowrap">${x.base?(cat==="__del"?`<button class="btn sm" ${d} data-restore="1">Restore</button>`:`<button class="btn alt sm" ${d} data-reset="1">Reset</button> <button class="btn alt sm" ${d} data-bdel="1">Delete</button>`):`<button class="btn alt sm" ${d} data-edit="1">Edit</button> <button class="btn alt sm" ${d} data-del="1">Delete</button>`}</td></tr>`}).join("")}
+function allCats(){return KFM_CATS.filter(c=>c.k!=="all").concat(S.cats||[])}
+function addCat(en,bn,e){const l=en.toLowerCase(),f=allCats().find(c=>c.en.toLowerCase()===l||(bn&&c.bn===bn));if(f)return f.k;const k="x"+Date.now().toString(36)+Math.random().toString(36).slice(2,4);(S.cats=S.cats||[]).push({k,en,bn:bn||en,e:e||"🛒",img:"cat-"+k+".jpg"});return k}
+function drawPills(){const el=$("cpills");if(!el)return;el.innerHTML=[["all","All"],["__mine","★ Mine"]].concat(allCats().map(c=>[c.k,(c.e&&S.cats&&S.cats.includes(c)?c.e+" ":"")+c.en])).map(([k,t])=>`<button class="pill${cat===k?" on":""}" data-pcat="${esc(k)}">${esc(t)}</button>`).join("")+'<button class="pill add" data-addcat="1">+ Category</button>'}
+function drawCats(){const el=$("mycats");if(!el)return;const m=S.cats||[];el.innerHTML=m.length?"My categories: "+m.map((c,i)=>`<span style="display:inline-block;margin:2px 6px 2px 0;padding:3px 10px;border:1px solid #ccd;border-radius:999px">${esc(c.e||"")} ${esc(c.en)} <button data-delcat="${i}" title="Remove category" style="border:0;background:none;color:#b3261e;cursor:pointer">✕</button></span>`).join(""):"";el.onclick=e=>{const i=e.target.dataset.delcat;if(i==null)return;const c=S.cats[+i];if(S.custom.some(p=>p.cat===c.k))return alert("Some of your products still use \""+c.en+"\". Move or delete those products first.");if(confirm("Remove category \""+c.en+"\"?")){S.cats.splice(+i,1);if(cat===c.k)cat="all";commit();vProducts()}}}
 let editCi=null,pmode="one";
 function openForm(ci){editCi=ci==null?null:ci;pmode="one";$("pdt").textContent=editCi==null?"Add a product":"Edit product";$("pdtabs").hidden=editCi!=null;setMode("one");
- $("f_cat").innerHTML=KFM_CATS.filter(c=>c.k!=="all").map(c=>`<option value="${c.k}">${esc(c.en)}</option>`).join("");
+ $("f_cat").innerHTML=allCats().map(c=>`<option value="${c.k}">${esc(c.en)}</option>`).join("")+'<option value="__new">➕ New category…</option>';$("newcat").hidden=true;$("nc_en").value="";$("nc_bn").value="";$("nc_e").value="🛒";
  const c=editCi==null?{e:"🛒",u:"kg",cat:"veg"}:S.custom[editCi];
  $("f_en").value=c.en||"";$("f_bn").value=c.bn&&c.bn!==c.en?c.bn:"";$("f_cat").value=c.cat||"pantry";$("f_u").value=c.u||"pc";$("f_p").value=c.p==null?"":c.p;$("f_old").value=c.old||"";$("f_stock").value=c.stock==null?"":c.stock;$("f_e").value=c.e||"🛒";$("f_sz").value=c.szm||"";$("f_g").value=c.g||"";$("f_img").value=c.img||"";$("f_file").value="";$("f_bulk").value="";$("pderr").textContent="";$("pd").showModal()}
 function setMode(m){pmode=m;$("pone").hidden=m!=="one";$("pbulk").hidden=m!=="bulk";document.querySelectorAll("#pdtabs button").forEach(b=>b.classList.toggle("on",b.dataset.pm===m));$("pdsave").textContent=m==="bulk"?"Add all":"Save product"}
 $("pdtabs").onclick=e=>{if(e.target.dataset.pm)setMode(e.target.dataset.pm)};
 $("pdcancel").onclick=()=>$("pd").close();
+$("f_cat").onchange=()=>{const n=$("f_cat").value==="__new";$("newcat").hidden=!n;if(n)$("nc_en").focus()};
 const num=v=>{v=String(v).trim().replace(/,/g,"");return v===""||isNaN(v)?undefined:Number(v)};
 const newId=()=>"c"+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
 $("pdsave").onclick=async()=>{const err=m=>$("pderr").textContent=m;err("");
- if(pmode==="bulk"){const units=["kg","pc","pack","dozen","l","bunch","g500"],cats=KFM_CATS.filter(c=>c.k!=="all");let n=0,bad=[];
+ if(pmode==="bulk"){const units=["kg","pc","pack","dozen","l","bunch","g500"],cats=allCats();let n=0,bad=[];
   $("f_bulk").value.split("\n").map(l=>l.trim()).filter(Boolean).forEach(l=>{const [nm,pr,ct,un]=l.split("|").map(x=>x.trim());const p=num(pr);if(!nm||p===undefined){bad.push(l);return}
-   const c=cats.find(c=>c.k===(ct||"").toLowerCase()||c.en.toLowerCase()===(ct||"").toLowerCase());S.custom.push({id:newId(),en:nm,bn:nm,cat:c?c.k:"pantry",u:units.includes((un||"").toLowerCase())?un.toLowerCase():"pc",p,e:"🛒"});n++});
+   const c=cats.find(c=>c.k===(ct||"").toLowerCase()||c.en.toLowerCase()===(ct||"").toLowerCase());S.custom.push({id:newId(),en:nm,bn:nm,cat:c?c.k:(ct?addCat(ct,"",""):"pantry"),u:units.includes((un||"").toLowerCase())?un.toLowerCase():"pc",p,e:"🛒"});n++});
   if(!n){err("Nothing to add. Use: Name | price | category | unit");return}
   commit();$("pd").close();cat="__mine";vProducts();if(bad.length)alert(n+" added. These lines were skipped:\n"+bad.join("\n"));return}
  const en=$("f_en").value.trim(),p=num($("f_p").value);if(!en)return err("Please enter the English name.");if(p===undefined)return err("Please enter a price.");
+ let ck=$("f_cat").value;if(ck==="__new"){const nen=$("nc_en").value.trim();if(!nen)return err("Please type the new category name.");ck=addCat(nen,$("nc_bn").value.trim(),$("nc_e").value.trim())}
  const c=editCi==null?{id:newId()}:S.custom[editCi];
- Object.assign(c,{en,bn:$("f_bn").value.trim()||en,cat:$("f_cat").value,u:$("f_u").value,p,e:$("f_e").value.trim()||"🛒",szm:$("f_sz").value,g:$("f_g").value.trim()});
+ Object.assign(c,{en,bn:$("f_bn").value.trim()||en,cat:ck,u:$("f_u").value,p,e:$("f_e").value.trim()||"🛒",szm:$("f_sz").value,g:$("f_g").value.trim()});
  ["old","stock"].forEach(k=>{const v=num($("f_"+k).value);if(v===undefined)delete c[k];else c[k]=v});
  if(!c.szm)delete c.szm;if(!c.g)delete c.g;
  const url=$("f_img").value.trim();if(url){c.img=url;delete c.photo}else if(!$("f_file").files[0])delete c.img;
