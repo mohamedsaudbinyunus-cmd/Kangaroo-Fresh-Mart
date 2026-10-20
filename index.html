@@ -7,7 +7,7 @@
 <meta name="theme-color" content="#1d6a33">
 <meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta property="og:type" content="website"><meta property="og:title" content="Kangaroo Fresh Mart – Fresh food, great value, everyday"><meta property="og:description" content="Order fresh vegetables, fruit, fish, dairy and groceries online. Pay by bKash, Nagad, card or cash.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦘</text></svg>">
+<link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" type="image/png" href="icon-192.png"><link rel="manifest" href="manifest.json"><meta name="apple-mobile-web-app-title" content="Kangaroo Fresh">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"GroceryStore","name":"Kangaroo Fresh Mart","telephone":"+8801882475941","slogan":"Fresh food. Great value. Everyday.","paymentAccepted":"bKash, Nagad, Rocket, Upay, Card, Cash","openingHours":"Mo-Su 08:00-22:00","priceRange":"৳৳","sameAs":["https://www.facebook.com/share/1YJD779mSB/?mibextid=wwXIfr"]}</script>
@@ -457,7 +457,7 @@ dialog::backdrop{background:rgba(8,30,18,.45);backdrop-filter:blur(5px)}
 window.KFM_CONFIG={
   firebaseUrl:"https://kangaroo-fresh-mart-f77fb-default-rtdb.firebaseio.com/",   // e.g. "https://your-project-default-rtdb.firebaseio.com"
   apiKey:"AIzaSyDodXN3fyUBpybYvq7ko_ziNlXT0snKjs0",        // Firebase "Web API key" (needed for the admin login)
-  localPin:"1234"     // LOCAL mode only: choose a PIN for admin.html (it is stored in this file, so it is NOT real security)
+  localPin:""     // LOCAL mode only: choose a PIN for admin.html (it is stored in this file, so it is NOT real security)
 };
 
 </script>
@@ -893,7 +893,7 @@ const PAY=[
  {k:"cash",en:"Cash (on delivery/pickup)",bn:"ক্যাশ (ডেলিভারি/পিকআপে)",e:"💵",type:"cash"}
 ];
 /* Categories: k = short key, img = picture file, e = emoji shown if the picture is missing */
-const CATS=KFM_CATS;
+const CATS=KFM_CATS,CATS_BASE=KFM_CATS.length;
 /* Units: kg, dozen, l, bunch, pack, pc, g500 */
 /* Products: add a line to add a product. Add old:PRICE to show a deal. Prices below are SAMPLES. */
 const PRODUCTS=[];
@@ -948,7 +948,7 @@ if("scrollRestoration"in history)history.scrollRestoration="manual";
 let ui=load("kfm_ui",load("kfm_lang","en")),lang=ui==="bn"?"bn":"en",cart=load("kfm_cart",{}),U=load("kfm",null),hist=load("kfm_orders",[]),cat="all",q="",sort="def";
 const PM={},SEL={},PK=new Set();
 function rebuild(st){
- st=st||{};const ov=st.products||{};PRODUCTS.length=0;for(const k in PM)delete PM[k];
+ st=st||{};const ov=st.products||{};CATS.length=CATS_BASE;(st.cats||[]).forEach(c=>{if(c&&c.k&&c.en&&!CATS.some(x=>x.k===c.k))CATS.push({k:c.k,en:c.en,bn:c.bn||c.en,e:c.e||"\ud83d\uded2",img:c.img||("cat-"+c.k+".jpg")})});if(!CATS.some(c=>c.k===cat))cat="all";PRODUCTS.length=0;for(const k in PM)delete PM[k];
  KFM_PRODUCTS.forEach(b=>{const o=ov[b.id]||{};if(o.hidden)return;const p=Object.assign({},b);
   ["p","old","stock","en","bn","img"].forEach(f=>{if(o[f]!==undefined&&o[f]!==null&&o[f]!=="")p[f]=o[f]});
   if(o.old===0)p.old=undefined;if(o.photo&&!o.img)p.img="ph:"+b.id+"@"+o.photo;PRODUCTS.push(p)});
@@ -1132,7 +1132,7 @@ $("revb").onclick=openRev;
 $("revd").addEventListener("click",e=>{if(e.target.id==="rgo")sendRev()});
 function openQV(id){QVid=id;renderQV();if(!$("qv").open)$("qv").showModal()}
 function renderQV(){const p=PM[QVid],k=p.sizes?p.id+"|"+(SEL[p.id]||"m"):p.id,v=PM[k],rel=PRODUCTS.filter(x=>x.cat===p.cat&&x.id!==p.id).slice(0,4);
- $("qvb").innerHTML=`<div class="im" style="max-width:240px;margin:0 auto 10px">${pic(p.img,p.e,nm(p))}</div><h2>${esc(nm(p))}</h2><small class="mut">${unit(p)} · ${CATS.find(c=>c.k===p.cat)[lang]}</small>${p.sizes?`<div class="szs" role="group">${Object.keys(CONFIG.sizes).map(z=>`<button class="sz${k.endsWith("|"+z)?" on":""}" data-sz="${p.id}|${z}">${CONFIG.sizes[z][lang]}</button>`).join("")}</div>`:""}<div class="pr"><strong>${money(v.p)}</strong>${v.old?`<s>${money(v.old)}</s>`:""}</div><div class="act" data-a="${k}">${act(k)}</div><button class="btn big" data-buy="${k}" style="width:100%;margin-top:8px">${t("buy")}</button><h3 style="font-size:18px;margin:16px 0 6px">${t("rel")}</h3><div class="rel">${rel.map(x=>`<button class="relb" data-qv="${x.id}">${pic(x.img,x.e,nm(x))}${esc(nm(x))}</button>`).join("")}</div><button class="pill" data-close="qv" style="margin-top:12px">${t("close")}</button>`}
+ $("qvb").innerHTML=`<div class="im" style="max-width:240px;margin:0 auto 10px">${pic(p.img,p.e,nm(p))}</div><h2>${esc(nm(p))}</h2><small class="mut">${unit(p)} · ${(CATS.find(c=>c.k===p.cat)||{})[lang]||""}</small>${p.sizes?`<div class="szs" role="group">${Object.keys(CONFIG.sizes).map(z=>`<button class="sz${k.endsWith("|"+z)?" on":""}" data-sz="${p.id}|${z}">${CONFIG.sizes[z][lang]}</button>`).join("")}</div>`:""}<div class="pr"><strong>${money(v.p)}</strong>${v.old?`<s>${money(v.old)}</s>`:""}</div><div class="act" data-a="${k}">${act(k)}</div><button class="btn big" data-buy="${k}" style="width:100%;margin-top:8px">${t("buy")}</button><h3 style="font-size:18px;margin:16px 0 6px">${t("rel")}</h3><div class="rel">${rel.map(x=>`<button class="relb" data-qv="${x.id}">${pic(x.img,x.e,nm(x))}${esc(nm(x))}</button>`).join("")}</div><button class="pill" data-close="qv" style="margin-top:12px">${t("close")}</button>`}
 $("hq").addEventListener("input",function(){const v=this.value.trim().toLowerCase(),b=$("sug");if(v.length<2){b.hidden=true;return}
  const a=PRODUCTS.filter(p=>hit(p,v)).slice(0,6);
  b.innerHTML=a.map(p=>`<button type="button" class="sg" data-qv="${p.id}">${pic(p.img,p.e,nm(p))}<span><b>${esc(nm(p))}</b><small>${money(PM[p.sizes?p.id+"|m":p.id].p)} · ${unit(p)}</small></span></button>`).join("");b.hidden=!a.length});
