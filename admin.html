@@ -153,6 +153,8 @@ const K={mode:cloud?"cloud":"local",
  async addOrder(o){o=Object.assign({status:"Pending",created:Date.now()},o);if(cloud)return req("POST","orders",o);const a=jget("kfmx_orders",[]);o.id="L"+Date.now();a.push(o);jset("kfmx_orders",a)},
  async orders(){if(cloud)return list(await req("GET","orders",undefined,true));return jget("kfmx_orders",[])},
  async setOrder(id,patch){if(cloud)return req("PATCH","orders/"+id,patch,true);const a=jget("kfmx_orders",[]),o=a.find(x=>x.id===id);if(o)Object.assign(o,patch);jset("kfmx_orders",a)},
+ async setStatus(no,s,n){const v={s,n:n||"",t:Date.now()};if(cloud)return req("PUT","orderStatus/"+encodeURIComponent(no),v,true);const m=jget("kfmx_ost",{});m[no]=v;jset("kfmx_ost",m)},
+ async statuses(nos){if(!cloud){const m=jget("kfmx_ost",{}),r={};nos.forEach(n=>{if(m[n])r[n]=m[n]});return r}const r={};await Promise.all(nos.slice(0,20).map(async n=>{try{const v=await req("GET","orderStatus/"+encodeURIComponent(n));if(v&&v.s)r[n]=v}catch(e){}}));return r},
  async addReview(r){r=Object.assign({created:Date.now()},r);if(cloud)return req("POST","reviewsPending",r);const a=jget("kfmx_revp",[]);r.id="R"+Date.now();a.push(r);jset("kfmx_revp",a)},
  async pending(){if(cloud)return list(await req("GET","reviewsPending",undefined,true));return jget("kfmx_revp",[])},
  async delPending(id){if(cloud)return req("DELETE","reviewsPending/"+id,undefined,true);jset("kfmx_revp",jget("kfmx_revp",[]).filter(x=>x.id!==id))},
@@ -559,6 +561,11 @@ function vOrders(){$("main").innerHTML='<div class="card" style="padding:0;overf
  $("opills").onclick=e=>{const s=e.target.dataset.of;if(s!=null){of=s;drawOrders()}};
  $("oref").onclick=pollOrders;$("ocsv").onclick=ordersCsv;drawOrders();pollOrders()}
 async function loadOrders(){return pollOrders()}
+function waPhone(p){const n=String(p||"").replace(/[^\d+]/g,"");if(n.startsWith("+"))return n.slice(1);if(n.startsWith("00"))return n.slice(2);if(n.startsWith("880"))return n;if(n.startsWith("0"))return "88"+n;return "880"+n}
+function waOrder(id,note){const o=ORD.find(x=>x.id===id);if(!o)return;const no=o.orderno||o.id,nm=o.name||"",st=o.status||"Pending",nt=note||"";
+ const E={Cancelled:"your order "+no+" at Kangaroo Fresh Mart has been cancelled"+(nt?" ("+nt+")":"")+". If you already paid, please contact us.",Paid:"we have received the payment for your order "+no+". We are preparing it now.",Delivered:"your order "+no+" has been delivered. Thank you for shopping with Kangaroo Fresh Mart!",Pending:"we are checking your order "+no+" and will confirm shortly."};
+ const B={Cancelled:"আপনার অর্ডার "+no+" বাতিল করা হয়েছে"+(nt?" ("+nt+")":"")+"। পেমেন্ট করে থাকলে আমাদের সাথে যোগাযোগ করুন।",Paid:"আপনার অর্ডার "+no+" এর পেমেন্ট পেয়েছি। আমরা প্রস্তুত করছি।",Delivered:"আপনার অর্ডার "+no+" ডেলিভারি হয়েছে। ধন্যবাদ!",Pending:"আপনার অর্ডার "+no+" যাচাই করছি, শীঘ্রই নিশ্চিত করব।"};
+ window.open("https://wa.me/"+waPhone(o.phone)+"?text="+encodeURIComponent("Hello "+nm+", "+E[st]+"\n\nহ্যালো "+nm+", "+B[st]),"_blank")}
 function isPaid(o){return o.status==="Paid"||o.status==="Delivered"}
 function drawOrders(){if(tab!=="orders"||!$("obody"))return;
  const nowm=(()=>{const d=new Date();return d.getFullYear()*12+d.getMonth()})();
@@ -567,7 +574,7 @@ function drawOrders(){if(tab!=="orders"||!$("obody"))return;
  $("opills").innerHTML=[["all","All"],["Pending","Pending"],["Paid","Paid"],["Delivered","Delivered"],["Cancelled","Cancelled"]].map(([k,t])=>`<button class="pill${of===k?" on":""}" data-of="${k}">${t} (${k==="all"?inM.length:inM.filter(o=>o.status===k).length})</button>`).join("");
  const paid=inM.filter(isPaid);
  $("ost").innerHTML=`<div><b>${inM.length}</b>Orders this month</div><div><b>${inM.filter(o=>o.status==="Pending").length}</b>Pending</div><div><b>${money(paid.reduce((x,o)=>x+(+o.total||0),0))}</b>Paid / delivered</div>`;
- $("obody").innerHTML=list.map(o=>`<tr><td>${new Date(o.created||0).toLocaleString()}<br><span class="mut">${esc(o.orderno||o.id)}</span></td><td>${esc(o.name||"")}<br><span class="mut">${esc(o.phone||"")}</span><br><span class="mut">${esc(o.address||"")}</span><br><span class="mut">${esc((o.mode||"")+" · "+(o.when||""))}</span></td><td><b>${money(o.total)}</b></td><td>${esc(o.payment||"")}<br><span class="mut">${esc(o.trxid||"")}</span></td><td class="mut">${esc(o.items||"").replace(/\n/g,"<br>")}</td><td><select data-oid="${esc(o.id)}">${["Pending","Paid","Delivered","Cancelled"].map(s=>`<option${s===o.status?" selected":""}>${s}</option>`).join("")}</select></td></tr>`).join("");
+ $("obody").innerHTML=list.map(o=>`<tr><td>${new Date(o.created||0).toLocaleString()}<br><span class="mut">${esc(o.orderno||o.id)}</span></td><td>${esc(o.name||"")}<br><span class="mut">${esc(o.phone||"")}</span><br><span class="mut">${esc(o.address||"")}</span><br><span class="mut">${esc((o.mode||"")+" · "+(o.when||""))}</span></td><td><b>${money(o.total)}</b></td><td>${esc(o.payment||"")}<br><span class="mut">${esc(o.trxid||"")}</span></td><td class="mut">${esc(o.items||"").replace(/\n/g,"<br>")}</td><td><select data-oid="${esc(o.id)}">${["Pending","Paid","Delivered","Cancelled"].map(s=>`<option${s===o.status?" selected":""}>${s}</option>`).join("")}</select><br><button class="btn alt sm" data-wa="${esc(o.id)}" style="margin-top:6px">📲 Message</button></td></tr>`).join("");
  $("onone").textContent=list.length?"":(ORD.length?"No orders for this month / filter.":"No orders yet. New orders from the public site appear here.");
  const mm={};ORD.forEach(o=>{const k=mk(o);(mm[k]=mm[k]||{n:0,t:0}).n++;if(isPaid(o))mm[k].t+=+o.total||0});
  $("msum").innerHTML=Object.keys(mm).sort((x,y)=>y-x).map(k=>`<tr><td>${MN[k%12]}, ${Math.floor(k/12)}</td><td>${mm[k].n}</td><td>${money(mm[k].t)}</td></tr>`).join("")||'<tr><td colspan="3" class="mut">No orders yet</td></tr>'}
@@ -675,9 +682,11 @@ function drawRev(){if(tab!=="reviews")return;$("rp").innerHTML=PEND.length?PEND.
  $("ra").innerHTML=S.reviews.length?S.reviews.map((r,i)=>`<p><b>${"★".repeat(r.r)}</b> ${esc(r.n)} – ${esc(r.en)} <button class="btn alt sm" data-rrm="${i}">Remove</button></p>`).join(""):'<span class="mut">None yet.</span>'}
 
 /* ---- one handler for every edit ---- */
-const M=$("main");
+const M=$("main");M.addEventListener("click",e=>{const b=e.target.closest("[data-wa]");if(b)waOrder(b.dataset.wa)});
 M.addEventListener("change",e=>{const t=e.target,d=t.dataset;
- if(d.oid){KFM.setOrder(d.oid,{status:t.value}).then(loadOrders).catch(x=>$("st").textContent="Failed: "+x.message);return}
+ if(d.oid){const o=ORD.find(x=>x.id===d.oid)||{},ns=t.value;let note="";
+   if(ns==="Cancelled"){const r=prompt("Cancel this order?\n\nType a reason to show the customer (optional), then press OK.\nPress Cancel to keep the order as it was.","");if(r===null){t.value=o.status||"Pending";return}note=r.trim()}
+   KFM.setOrder(d.oid,{status:ns}).then(()=>o.orderno?KFM.setStatus(o.orderno,ns,note).catch(x=>{throw new Error("order saved, but the customer could not be told on the shop ("+x.message+"). Update the Firebase Rules (see SETUP.txt).")}):0).then(()=>pollOrders()).then(()=>{if(ns==="Cancelled"&&confirm("Order cancelled. The customer will see this on the shop.\n\nAlso send them a WhatsApp message now?"))waOrder(d.oid,note)}).catch(x=>{$("st").textContent="Failed: "+x.message;alert("Failed: "+x.message)});return}
  if(d.f){const tgt=d.id?(S.products[d.id]=S.products[d.id]||{}):S.custom[+d.ci];let v=t.type==="checkbox"?t.checked:t.value.trim();
   if(["p","old","stock"].includes(d.f)&&typeof v==="string"&&v!=="")v=Number(v);
   if(v===""||v===false)delete tgt[d.f];else tgt[d.f]=v;commit();return}
