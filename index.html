@@ -356,6 +356,7 @@ dialog::backdrop{background:rgba(8,30,18,.45);backdrop-filter:blur(5px)}
 .rthx{color:#9fb0d6;font-size:14px;margin:6px 0 0}
 .racts{display:flex;gap:12px;width:min(100%,380px)}
 .rb{flex:1;padding:15px;border-radius:999px;border:0;font-weight:700;font-size:16px;font-family:inherit;cursor:pointer;background:#16264d;color:#fff}.rb.w{background:#fff;color:#111}
+.racts .rb{padding:12px 6px;font-size:14px}
 .rlinks{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 16px}.rlinks button{background:none;border:0;color:#9fb0d6;text-decoration:underline;font:inherit;cursor:pointer;padding:4px}
 .stc{display:inline-block;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700;background:#f3e2b3;color:#7a5a00}.stc.st-Paid{background:#cfe8ff;color:#0b4a8a}.stc.st-Delivered{background:#cdeccf;color:#17632a}.stc.st-Cancelled{background:#fbd0cc;color:#a1180f}
 #ostban{position:fixed;left:50%;transform:translateX(-50%);top:calc(10px + env(safe-area-inset-top));z-index:200;max-width:92vw;background:#fff;color:#111;border-left:6px solid #d63a33;border-radius:12px;padding:12px 16px;box-shadow:0 10px 30px rgba(0,0,0,.35);font-weight:600;cursor:pointer}
@@ -472,7 +473,8 @@ dialog::backdrop{background:rgba(8,30,18,.45);backdrop-filter:blur(5px)}
 <div class="rc-paper" id="rcpPaper"></div>
 <p class="rthx" id="thxp"></p>
 <div class="racts"><button class="rb" id="rprint" data-i="rprint"></button><button class="rb w" id="cont" data-i="rdone"></button></div>
-<div class="rlinks"><button id="rcpb" data-i="rcpc"></button><button id="rcps" data-i="rcps"></button><button id="resend" data-i="resend"></button><button id="rmy" data-i="myo"></button></div>
+<div class="racts" style="margin-top:-2px"><button class="rb" id="rshare" data-i="rshare"></button><button class="rb" id="rimg" data-i="rimg"></button><button class="rb" id="rpdf" data-i="rpdf"></button></div>
+<div class="rlinks"><button id="rcpb" data-i="rcpc"></button><button id="resend" data-i="resend"></button><button id="rmy" data-i="myo"></button></div>
 </div>
 </aside>
 
@@ -968,7 +970,7 @@ accP:["Save your details once and they fill in at checkout.","একবার �
 e_sign:["Please enter your name and phone number.","অনুগ্রহ করে নাম ও ফোন নাম্বার দিন।"],added:["Added to basket","ঝুড়িতে যোগ হয়েছে"],vb:["View basket","ঝুড়ি দেখুন"],items:["{n} items","{n}টি আইটেম"],ge:["Sign-in failed. Please try again.","সাইন-ইন হয়নি। আবার চেষ্টা করুন।"],
 fnm:["Your name","আপনার নাম"],
 saved:["Saved","পছন্দের"],more:["Show more ({n} left)","আরও দেখুন ({n}টি বাকি)"],open:["Open now","এখন খোলা"],closed:["Closed now","এখন বন্ধ"],
-cpn:["Coupon code","কুপন কোড"],apply:["Apply","প্রয়োগ"],disc:["Discount","ছাড়"],cok:["Coupon {c} applied","কুপন {c} প্রয়োগ হয়েছে"],cbad:["Invalid coupon code","কুপন কোডটি সঠিক নয়"],cmin:["Spend {n} or more to use this coupon","এই কুপনের জন্য কমপক্ষে {n} কিনুন"],o_today:["Today","আজ"],o_tmr:["Tomorrow","আগামীকাল"],rel:["You may also like","আপনার পছন্দ হতে পারে"],resend:["Open WhatsApp again","আবার হোয়াটসঅ্যাপ খুলুন"],tip:["Rider tip","রাইডার টিপ"],o_t0:["No rider tip","রাইডার টিপ নয়"],o_tip:["Rider tip {n}","রাইডার টিপ {n}"],rtitle:["Your receipt","আপনার রসিদ"],rprint:["Print","প্রিন্ট"],rdone:["Done","শেষ"],rcpc:["Copy receipt","রসিদ কপি করুন"],rcps:["Save receipt","রসিদ সেভ করুন"],buy:["Buy now","এখনই কিনুন"],sold:["Sold out","স্টক শেষ"],
+cpn:["Coupon code","কুপন কোড"],apply:["Apply","প্রয়োগ"],disc:["Discount","ছাড়"],cok:["Coupon {c} applied","কুপন {c} প্রয়োগ হয়েছে"],cbad:["Invalid coupon code","কুপন কোডটি সঠিক নয়"],cmin:["Spend {n} or more to use this coupon","এই কুপনের জন্য কমপক্ষে {n} কিনুন"],o_today:["Today","আজ"],o_tmr:["Tomorrow","আগামীকাল"],rel:["You may also like","আপনার পছন্দ হতে পারে"],resend:["Open WhatsApp again","আবার হোয়াটসঅ্যাপ খুলুন"],tip:["Rider tip","রাইডার টিপ"],o_t0:["No rider tip","রাইডার টিপ নয়"],o_tip:["Rider tip {n}","রাইডার টিপ {n}"],rtitle:["Your receipt","আপনার রসিদ"],rshare:["📤 Share","📤 শেয়ার"],rimg:["🖼 Image","🖼 ছবি"],rpdf:["📄 PDF","📄 PDF"],rprint:["Print","প্রিন্ট"],rdone:["Done","শেষ"],rcpc:["Copy receipt","রসিদ কপি করুন"],rcps:["Save receipt","রসিদ সেভ করুন"],buy:["Buy now","এখনই কিনুন"],sold:["Sold out","স্টক শেষ"],
 nrev:["Reviews","রিভিউ"],stp:["Products","পণ্য"],stc:["Categories","ক্যাটাগরি"],stm:["Payment methods","পেমেন্ট পদ্ধতি"],stl:["Languages","ভাষা"],revH:["What customers say","ক্রেতারা কী বলছেন"],revW:["Write a review","রিভিউ লিখুন"],revP:["Tell us about your order…","আপনার অভিজ্ঞতা লিখুন…"],revS2:["Send review","রিভিউ পাঠান"],e_star:["Please choose a star rating.","স্টার রেটিং বেছে নিন।"],e_rev:["Please enter your name and a short review.","নাম ও একটি ছোট রিভিউ দিন।"],revok:["Thank you! Your review was sent for approval.","ধন্যবাদ! আপনার রিভিউ অনুমোদনের জন্য পাঠানো হয়েছে।"],pend:["awaiting approval","অনুমোদনের অপেক্ষায়"],norev:["No reviews yet. Be the first to share your experience.","এখনো কোনো রিভিউ নেই। প্রথম রিভিউটি আপনিই দিন।"],revn:["{n} reviews","{n}টি রিভিউ"],paycard:["Pay by card","কার্ডে পেমেন্ট করুন"],cref:["Card payment reference","কার্ড পেমেন্ট রেফারেন্স"],cardbox:["Pay {amt} securely by card (Visa, Mastercard, Amex) on our payment partner's page, then paste the payment reference below.","আমাদের পেমেন্ট পার্টনারের নিরাপদ পেজে {amt} কার্ডে (ভিসা, মাস্টারকার্ড, অ্যামেক্স) পেমেন্ট করুন, তারপর নিচে পেমেন্ট রেফারেন্স দিন।"]
 };
 
@@ -1066,9 +1068,8 @@ function err(k){$("err").textContent=t(k);return false}
 function save(o){try{if(o&&o.type==="order")KFM.addOrder(o);else if(o&&o.type==="review")KFM.addReview(o)}catch(e){}
  if(!CONFIG.sheetUrl)return;try{fetch(CONFIG.sheetUrl,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain"},body:JSON.stringify(o)})}catch(e){}}
 const C128=["212222", "222122", "222221", "121223", "121322", "131222", "122213", "122312", "132212", "221213", "221312", "231212", "112232", "122132", "122231", "113222", "123122", "123221", "223211", "221132", "221231", "213212", "223112", "312131", "311222", "321122", "321221", "312212", "322112", "322211", "212123", "212321", "232121", "111323", "131123", "131321", "112313", "132113", "132311", "211313", "231113", "231311", "112133", "112331", "132131", "113123", "113321", "133121", "313121", "211331", "231131", "213113", "213311", "213131", "311123", "311321", "331121", "312113", "312311", "332111", "314111", "221411", "431111", "111224", "111422", "121124", "121421", "141122", "141221", "112214", "112412", "122114", "122411", "142112", "142211", "241211", "221114", "413111", "241112", "134111", "111242", "121142", "121241", "114212", "124112", "124211", "411212", "421112", "421211", "212141", "214121", "412121", "111143", "111341", "131141", "114113", "114311", "411113", "411311", "113141", "114131", "311141", "411131", "211412", "211214", "211232", "2331112"];
-function bc128(txt){const codes=[104];for(const ch of txt){const c=ch.charCodeAt(0)-32;if(c>=0&&c<=94)codes.push(c)}let sum=104;for(let k=1;k<codes.length;k++)sum+=k*codes[k];codes.push(sum%103,106);let x=10,bars="";const H=46;
- codes.forEach(c=>{let on=true;for(const w of C128[c]){const n=+w;if(on)bars+=`<rect x="${x}" y="0" width="${n}" height="${H}"/>`;x+=n;on=!on}});
- return `<svg viewBox="0 0 ${x+10} ${H}" preserveAspectRatio="none" class="rc-bar" role="img" aria-label="${esc(txt)}" fill="#111">${bars}</svg>`}
+function c128bars(txt){const codes=[104];for(const ch of txt){const c=ch.charCodeAt(0)-32;if(c>=0&&c<=94)codes.push(c)}let sum=104;for(let k=1;k<codes.length;k++)sum+=k*codes[k];codes.push(sum%103,106);let x=10;const bars=[];codes.forEach(c=>{let on=true;for(const w of C128[c]){const n=+w;if(on)bars.push([x,n]);x+=n;on=!on}});return{bars,w:x+10}}
+function bc128(txt){const r=c128bars(txt);return `<svg viewBox="0 0 ${r.w} 46" preserveAspectRatio="none" class="rc-bar" role="img" aria-label="${esc(txt)}" fill="#111">${r.bars.map(b=>`<rect x="${b[0]}" y="0" width="${b[1]}" height="46"/>`).join("")}</svg>`}
 const RL={h:["ORDER RECEIPT","অর্ডার রসিদ"],rec:["RECEIPT","রসিদ"],date:["DATE","তারিখ"],type:["TYPE","ধরন"],cust:["CUSTOMER","গ্রাহক"],sub:["Subtotal","সাবটোটাল"],disc:["Discount","ছাড়"],del:["Delivery","ডেলিভারি"],tip:["Rider tip","রাইডার টিপ"],free:["Free","ফ্রি"],tot:["TOTAL","মোট"],pay:["PAYMENT","পেমেন্ট"],ref:["TRX / REF","ট্রানজেকশন / রেফ"],stat:["STATUS","অবস্থা"],wait:["AWAITING CONFIRMATION","নিশ্চিতকরণের অপেক্ষায়"],ty:["Thank you for shopping with Kangaroo Fresh Mart.","কাঙ্গারু ফ্রেশ মার্টে কেনাকাটার জন্য ধন্যবাদ।"],stamp:["ORDER<br>PLACED","অর্ডার<br>গৃহীত"]};
 const rl=k=>RL[k][li(lang)];
 const RCST={Pending:[["ORDER<br>PLACED","AWAITING CONFIRMATION",""],["অর্ডার<br>গৃহীত","নিশ্চিতকরণের অপেক্ষায়",""]],Paid:[["PAYMENT<br>CONFIRMED","PAYMENT CONFIRMED","ok"],["পেমেন্ট<br>নিশ্চিত","পেমেন্ট নিশ্চিত","ok"]],Delivered:[["DELIVERED","DELIVERED","ok"],["ডেলিভারি<br>হয়েছে","ডেলিভারি হয়েছে","ok"]],Cancelled:[["CANCELLED","CANCELLED","bad"],["বাতিল","বাতিল","bad"]]};
@@ -1077,6 +1078,73 @@ function rcPlain(d){const dt=new Date(d.time);return ["KANGAROO FRESH MART","Ord
 function rcHtml(d){const row=(a,b)=>`<div class="rc-r"><span>${a}</span><b>${b}</b></div>`,dt=new Date(d.time);
  const ST=stOf(d.status);const dd=dt.toLocaleDateString("en-GB",{day:"2-digit",month:"short",year:"numeric"}).toUpperCase(),ds=dd+"  "+dt.toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit"});
  return `<div class="rc-brand">KANGAROO FRESH MART</div><div class="rc-sub">${rl("h")}</div><hr class="rc-d">${row(rl("rec"),esc(d.no))}${row(rl("date"),ds)}${row(rl("type"),esc(d.mode))}${row(rl("cust"),esc(d.name))}<hr class="rc-d">${d.lines.map(l=>`<div class="rc-r rc-i"><span>${l.q} × ${esc(l.n)}</span><b>${money(l.amt)}</b></div>`).join("")}<hr class="rc-d">${row(rl("sub"),money(d.sub))}${d.disc?row(rl("disc"),"-"+money(d.disc)):""}${row(rl("del"),d.pick?"—":d.fee?money(d.fee):rl("free"))}${d.tip?row(rl("tip"),money(d.tip)):""}<hr class="rc-s"><div class="rc-tot"><span>${rl("tot")}</span><i class="rc-stamp ${ST[2]}"><u>${ST[0]}</u><small>${dd}</small></i><strong>${money(d.total)}</strong></div>${row(rl("pay"),esc(d.pay))}${d.trx?row(rl("ref"),esc(d.trx)):""}<div class="rc-r"><span>${rl("stat")}</span><b id="rcStat">${ST[1]}</b></div><div class="rc-bw">${bc128(d.no)}</div><div class="rc-no">${esc(d.no.split("").join(" "))}</div><p class="rc-ty">${rl("ty")}</p>`}
+const RC_SC=3;
+function rcCanvas(d){
+ const SC=RC_SC,M=26,W=380,P=20,IW=W-2*P,FONT='ui-monospace,SFMono-Regular,Menlo,Consolas,"Courier New",monospace';
+ const dt=new Date(d.time),dd=dt.toLocaleDateString("en-GB",{day:"2-digit",month:"short",year:"numeric"}).toUpperCase(),ds=dd+"  "+dt.toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit"});
+ const ST=stOf(d.status),col=ST[2]==="ok"?"#1f8a3b":ST[2]==="bad"?"#c62828":"#3f66c8",paper="#fbfbf9";
+ const seg=s=>window.Intl&&Intl.Segmenter?Array.from(new Intl.Segmenter(undefined,{granularity:"grapheme"}).segment(s),x=>x.segment):Array.from(s);
+ function wrap(ctx,text,maxW){const out=[];String(text).split("\n").forEach(par=>{let line="";seg(par).forEach(ch=>{if(line&&ctx.measureText(line+ch).width>maxW){out.push(line);line=ch.trim()?ch:""}else line+=ch});out.push(line)});return out}
+ function spaced(ctx,t,x,y,sp,align){const ch=seg(t);let w=-sp;ch.forEach(c=>w+=ctx.measureText(c).width+sp);let px=align==="center"?x-w/2:align==="right"?x-w:x;ctx.textAlign="left";ch.forEach(c=>{ctx.fillText(c,px,y);px+=ctx.measureText(c).width+sp})}
+ function rr(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+ const x0=M+P,x1=M+W-P,pT=M+4;
+ function content(ctx){let y=pT+22+13;const lh=19;
+  const dash=()=>{y+=6;ctx.save();ctx.setLineDash([4,3]);ctx.strokeStyle="#c9c8c0";ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(x0,y);ctx.lineTo(x1,y);ctx.stroke();ctx.restore();y+=19};
+  const solid=()=>{y+=2;ctx.fillStyle="#1b1b1b";ctx.fillRect(x0,y,IW,2);y+=17};
+  const row=(l,v,item,bold)=>{ctx.font=`13px ${FONT}`;const lw=item?0:ctx.measureText(l).width;
+   ctx.font=`${item?"400":"600"} 13px ${FONT}`;let left=[],right=[];
+   if(item){const aw=(ctx.font=`600 13px ${FONT}`,ctx.measureText(v).width);ctx.font=`400 13px ${FONT}`;left=wrap(ctx,l,IW-aw-14);right=[v]}
+   else{ctx.font=`600 13px ${FONT}`;right=wrap(ctx,v,IW-lw-14);left=[l]}
+   const n=Math.max(left.length,right.length);
+   for(let k=0;k<n;k++){const yy=y+k*lh;
+    if(left[k]!=null){ctx.textAlign="left";ctx.font=`400 13px ${FONT}`;ctx.fillStyle=item?"#1b1b1b":"#77766f";ctx.fillText(left[k],x0,yy)}
+    if(right[k]!=null){ctx.textAlign="right";ctx.font=`600 13px ${FONT}`;ctx.fillStyle="#1b1b1b";ctx.fillText(right[k],x1,yy)}}
+   y+=n*lh+2};
+  ctx.textBaseline="alphabetic";
+  ctx.fillStyle="#1b1b1b";ctx.font=`800 16px ${FONT}`;spaced(ctx,"KANGAROO FRESH MART",M+W/2,y,5,"center");y+=17;
+  ctx.fillStyle="#6b6b66";ctx.font=`400 10.5px ${FONT}`;spaced(ctx,rl("h"),M+W/2,y,2.3,"center");y+=2;
+  dash();
+  row(rl("rec"),d.no);row(rl("date"),ds);row(rl("type"),d.mode||"");row(rl("cust"),d.name||"");
+  dash();
+  d.lines.forEach(l=>row(l.q+" × "+l.n,money(l.amt),true));
+  dash();
+  row(rl("sub"),money(d.sub));if(d.disc)row(rl("disc"),"-"+money(d.disc));row(rl("del"),d.pick?"—":d.fee?money(d.fee):rl("free"));if(d.tip)row(rl("tip"),money(d.tip));
+  solid();
+  const ty=y;y+=24;ctx.textAlign="left";ctx.fillStyle="#1b1b1b";ctx.font=`800 13px ${FONT}`;spaced(ctx,rl("tot"),x0,y,.8,"left");
+  ctx.textAlign="right";ctx.font=`800 28px ${FONT}`;ctx.fillText(money(d.total),x1,y+4);
+  const cx=x0+78+46,cy=ty+34;ctx.save();ctx.translate(cx,cy);ctx.rotate(-12*Math.PI/180);ctx.globalAlpha=.85;ctx.strokeStyle=col;ctx.fillStyle=col;ctx.lineWidth=1;
+  ctx.beginPath();ctx.arc(0,0,45.5,0,7);ctx.stroke();ctx.beginPath();ctx.arc(0,0,43.5,0,7);ctx.stroke();
+  const sl=ST[0].split("<br>");ctx.font=`800 13px ${FONT}`;sl.forEach((t,k)=>spaced(ctx,t,0,-4+(k-(sl.length-1)/2)*15,1,"center"));
+  ctx.font=`400 8px ${FONT}`;spaced(ctx,dd,0,14+(sl.length-1)*7,0,"center");ctx.restore();ctx.globalAlpha=1;
+  y+=34;
+  row(rl("pay"),d.pay||"");if(d.trx)row(rl("ref"),d.trx);row(rl("stat"),ST[1]);
+  y+=8;const b=c128bars(d.no),sx=IW/b.w;ctx.fillStyle="#111";b.bars.forEach(([x,n])=>ctx.fillRect(x0+x*sx,y,n*sx,56));y+=56+13;
+  ctx.fillStyle="#77766f";ctx.font=`400 10px ${FONT}`;spaced(ctx,d.no.split("").join(" "),M+W/2,y,3,"center");y+=12;
+  ctx.fillStyle="#1b1b1b";ctx.font=`italic 13px ${FONT}`;ctx.textAlign="center";wrap(ctx,rl("ty"),IW).forEach(t=>{y+=lh;ctx.fillText(t,M+W/2,y)});
+  return y+26};
+ const sc=document.createElement("canvas");sc.width=M*2+W;sc.height=4000;const sctx=sc.getContext("2d");const pB=content(sctx);
+ const H=Math.ceil(pB+9+M),c=document.createElement("canvas");c.width=(W+2*M)*SC;c.height=H*SC;const ctx=c.getContext("2d");ctx.scale(SC,SC);
+ const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,"#0c1c3f");g.addColorStop(1,"#050b1d");ctx.fillStyle=g;ctx.fillRect(0,0,W+2*M,H);
+ ctx.save();ctx.shadowColor="rgba(0,0,0,.45)";ctx.shadowBlur=30*SC;ctx.shadowOffsetY=15*SC;ctx.fillStyle=paper;ctx.fillRect(M,pT,W,pB-pT);ctx.restore();
+ ctx.fillStyle=paper;ctx.fillRect(M,pT,W,pB-pT);ctx.save();ctx.beginPath();ctx.rect(M,pB-1,W,10);ctx.clip();for(let x=M;x<M+W;x+=14){ctx.beginPath();ctx.moveTo(x,pB-1);ctx.lineTo(x+14,pB-1);ctx.lineTo(x+7,pB+8);ctx.closePath();ctx.fill()}ctx.restore();
+ content(ctx);
+ const sg=ctx.createLinearGradient(0,M,0,M+18);sg.addColorStop(0,"#f2f4fa");sg.addColorStop(1,"#c9d0e2");ctx.save();ctx.shadowColor="rgba(0,0,0,.4)";ctx.shadowBlur=10*SC;ctx.shadowOffsetY=4*SC;ctx.fillStyle=sg;rr(ctx,M,M,W,18,12);ctx.fill();ctx.restore();
+ return c}
+function pdfFromJpeg(jpg,w,h,pw,ph){const te=new TextEncoder(),parts=[],offs=[];let len=0;const push=b=>{if(typeof b==="string")b=te.encode(b);parts.push(b);len+=b.length};
+ push("%PDF-1.4\n");const obj=(n,body)=>{offs[n]=len;push(n+" 0 obj\n");push(body);push("\nendobj\n")};
+ obj(1,"<< /Type /Catalog /Pages 2 0 R >>");obj(2,"<< /Type /Pages /Kids [3 0 R] /Count 1 >>");
+ obj(3,`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pw} ${ph}] /Resources << /XObject << /Im0 4 0 R >> >> /Contents 5 0 R >>`);
+ offs[4]=len;push(`4 0 obj\n<< /Type /XObject /Subtype /Image /Width ${w} /Height ${h} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${jpg.length} >>\nstream\n`);push(jpg);push("\nendstream\nendobj\n");
+ const cs=`q ${pw} 0 0 ${ph} 0 0 cm /Im0 Do Q`;obj(5,`<< /Length ${cs.length} >>\nstream\n${cs}\nendstream`);
+ const xo=len;let x="xref\n0 6\n0000000000 65535 f \n";for(let n=1;n<=5;n++)x+=String(offs[n]).padStart(10,"0")+" 00000 n \n";push(x+`trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n${xo}\n%%EOF`);
+ return new Blob(parts,{type:"application/pdf"})}
+function saveBlob(b,name){const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},2000)}
+const rcBlob=d=>new Promise(r=>rcCanvas(d).toBlob(r,"image/png"));
+async function rcSavePng(d){saveBlob(await rcBlob(d),"receipt-"+d.no+".png")}
+function rcSavePdf(d){const c=rcCanvas(d),bin=atob(c.toDataURL("image/jpeg",.95).split(",")[1]),b=new Uint8Array(bin.length);for(let k=0;k<bin.length;k++)b[k]=bin.charCodeAt(k);saveBlob(pdfFromJpeg(b,c.width,c.height,+(c.width/RC_SC).toFixed(2),+(c.height/RC_SC).toFixed(2)),"receipt-"+d.no+".pdf")}
+async function rcShare(d){const blob=await rcBlob(d),f=new File([blob],"receipt-"+d.no+".png",{type:"image/png"});
+ if(navigator.canShare&&navigator.canShare({files:[f]})){try{await navigator.share({files:[f],title:"Receipt "+d.no,text:"Kangaroo Fresh Mart – receipt "+d.no});return"shared"}catch(e){if(e&&e.name==="AbortError")return"cancel"}}
+ saveBlob(blob,f.name);return"saved"}
 let lastRcD=null;function renderRc(d){lastRcD=d;$("rcpPaper").innerHTML=rcHtml(d);$("rsub").textContent=money(d.total)+" · "+d.pay}
 function printRc(){const f=document.createElement("iframe");f.style.cssText="position:fixed;right:0;bottom:0;width:0;height:0;border:0";document.body.appendChild(f);const d=f.contentDocument;d.open();d.write('<!doctype html><meta charset="utf-8"><title>Receipt</title><style>'+$("rcss").textContent+'body{margin:0;padding:12px;background:#fff}.rc-paper{box-shadow:none;margin:0 auto}.rc-paper::after{display:none}</style><div class="rc-paper">'+$("rcpPaper").innerHTML+'</div>');d.close();setTimeout(()=>{try{f.contentWindow.focus();f.contentWindow.print()}catch(e){}setTimeout(()=>f.remove(),2000)},350)}
 function place(){const T=totals();if(!T.cnt)return;const v=id=>$(id).value.trim();$("err").textContent="";
@@ -1200,7 +1268,7 @@ $("hs").addEventListener("submit",()=>$("sug").hidden=true);
 document.addEventListener("click",e=>{if(!e.target.closest(".sf"))$("sug").hidden=true});
 $("tp").onchange=renderCart;
 $("rprint").onclick=printRc;$("rmy").onclick=()=>{closeDrawer();openAcc()}; $("rcpb").onclick=()=>{try{navigator.clipboard.writeText(lastRc);toast(t("copied"))}catch(e){prompt("",lastRc)}};
-$("rcps").onclick=()=>{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([lastRc],{type:"text/plain"}));a.download="receipt-"+lastNo+".txt";a.click()};
+$("rshare").onclick=()=>lastRcD&&rcShare(lastRcD);$("rimg").onclick=()=>lastRcD&&rcSavePng(lastRcD);$("rpdf").onclick=()=>lastRcD&&rcSavePdf(lastRcD);
 $("resend").onclick=()=>{if(lastWA)window.open(lastWA,"_blank")};
 function renderSocial(){const N={facebook:["fb","f","Facebook"],instagram:["ig","IG","Instagram"],tiktok:["tt","T","TikTok"],youtube:["yt","\u25b6","YouTube"]};
  const h=Object.keys(N).filter(k=>/^https:\/\//.test(CONFIG.social[k]||"")).map(k=>`<a class="soc ${N[k][0]}" href="${esc(CONFIG.social[k])}" target="_blank" rel="noopener" aria-label="${N[k][2]}"><b>${N[k][1]}</b>${N[k][2]}</a>`).join("");
