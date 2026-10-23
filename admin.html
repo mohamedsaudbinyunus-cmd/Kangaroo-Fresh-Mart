@@ -67,6 +67,29 @@ dialog::backdrop{background:rgba(8,30,18,.5);backdrop-filter:blur(5px)}
 #toast{position:fixed;left:50%;transform:translateX(-50%);top:calc(10px + env(safe-area-inset-top));z-index:50;background:#d63a33;color:#fff;border-radius:14px;padding:12px 18px;box-shadow:0 10px 30px rgba(0,0,0,.3);font-weight:700;cursor:pointer;max-width:92vw}
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<style id="rcss">
+.rc-paper{position:relative;width:min(100%,380px);margin:0 auto 14px;background:#fbfbf9;color:#1b1b1b;padding:22px 20px 26px;font:13px/1.45 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;box-shadow:0 20px 50px rgba(0,0,0,.45);text-align:left}
+.rc-paper::after{content:"";position:absolute;left:0;right:0;bottom:-9px;height:9px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9'%3E%3Cpath d='M0 0h14L7 9z' fill='%23fbfbf9'/%3E%3C/svg%3E") repeat-x}
+.rc-brand{text-align:center;font-weight:800;letter-spacing:.3em;font-size:16px}
+.rc-sub{text-align:center;letter-spacing:.22em;color:#6b6b66;font-size:10.5px;margin-top:4px}
+.rc-d{border:0;border-top:1.5px dashed #c9c8c0;margin:12px 0}
+.rc-s{border:0;border-top:2px solid #1b1b1b;margin:10px 0}
+.rc-r{display:flex;justify-content:space-between;gap:12px;padding:2px 0}.rc-r span{color:#77766f}.rc-r b{font-weight:600;text-align:right;word-break:break-word}
+.rc-i span{color:#1b1b1b;flex:1}
+.rc-tot{position:relative;display:flex;justify-content:space-between;align-items:center;padding:8px 0 10px}.rc-tot span{font-weight:800;letter-spacing:.06em}.rc-tot strong{font-size:28px}
+.rc-stamp{position:absolute;left:78px;top:-10px;width:92px;height:92px;border:3px double #3f66c8;border-radius:50%;color:#3f66c8;display:flex;flex-direction:column;align-items:center;justify-content:center;transform:rotate(-12deg);opacity:.85;font-style:normal;text-align:center;pointer-events:none}
+.rc-stamp u{text-decoration:none;font-weight:800;letter-spacing:.08em;font-size:13px;line-height:1.15}.rc-stamp small{font-size:8px;margin-top:2px}
+.rc-bw{margin-top:14px}.rc-bar{width:100%;height:56px;display:block}
+.rc-stamp.ok{color:#1f8a3b;border-color:#1f8a3b}.rc-stamp.bad{color:#c62828;border-color:#c62828}
+.rc-no{text-align:center;color:#77766f;letter-spacing:.3em;font-size:10px;margin-top:6px}
+.rc-ty{text-align:center;font-style:italic;margin:14px 0 0}
+</style>
+<style>
+#rd{border:0;border-radius:18px;padding:18px 14px;background:linear-gradient(180deg,#0c1c3f,#050b1d);color:#fff;width:min(96vw,440px);max-height:94vh;overflow:auto}
+#rd::backdrop{background:rgba(0,0,0,.6)}#rd h2{margin:0 0 10px;text-align:center;color:#fff}
+.rslot{width:100%;height:18px;border-radius:12px;background:linear-gradient(#f2f4fa,#c9d0e2);box-shadow:0 4px 10px rgba(0,0,0,.4);margin-bottom:-14px;position:relative;z-index:2}
+.racts{display:flex;gap:10px;margin-top:16px}.rb{flex:1;padding:13px;border-radius:999px;border:0;font-weight:700;font-size:15px;font-family:inherit;cursor:pointer;background:#16264d;color:#fff}.rb.w{background:#fff;color:#111}
+</style>
 </head><body>
 
 <section id="login" class="card">
@@ -83,6 +106,7 @@ dialog::backdrop{background:rgba(8,30,18,.5);backdrop-filter:blur(5px)}
 <div id="warn" hidden style="margin:10px 12px 0;padding:12px 14px;border-radius:14px;font-size:14px"></div>
 <nav id="tabs"></nav>
 <main id="main"></main>
+<dialog id="rd"><h2>🧾 Order receipt</h2><div class="rslot"></div><div class="rc-paper" id="rdPaper"></div><div class="racts"><button class="rb" id="rdPrint">Print</button><button class="rb w" id="rdSend">📲 Send to customer</button></div><div class="racts" style="margin-top:8px"><button class="rb" id="rdClose">Close</button></div></dialog>
 <div id="toast" hidden></div>
 </div>
 <input type="file" id="file" accept="image/*" hidden>
@@ -566,6 +590,28 @@ function waOrder(id,note){const o=ORD.find(x=>x.id===id);if(!o)return;const no=o
  const E={Cancelled:"your order "+no+" at Kangaroo Fresh Mart has been cancelled"+(nt?" ("+nt+")":"")+". If you already paid, please contact us.",Paid:"we have received the payment for your order "+no+". We are preparing it now.",Delivered:"your order "+no+" has been delivered. Thank you for shopping with Kangaroo Fresh Mart!",Pending:"we are checking your order "+no+" and will confirm shortly."};
  const B={Cancelled:"আপনার অর্ডার "+no+" বাতিল করা হয়েছে"+(nt?" ("+nt+")":"")+"। পেমেন্ট করে থাকলে আমাদের সাথে যোগাযোগ করুন।",Paid:"আপনার অর্ডার "+no+" এর পেমেন্ট পেয়েছি। আমরা প্রস্তুত করছি।",Delivered:"আপনার অর্ডার "+no+" ডেলিভারি হয়েছে। ধন্যবাদ!",Pending:"আপনার অর্ডার "+no+" যাচাই করছি, শীঘ্রই নিশ্চিত করব।"};
  window.open("https://wa.me/"+waPhone(o.phone)+"?text="+encodeURIComponent("Hello "+nm+", "+E[st]+"\n\nহ্যালো "+nm+", "+B[st]),"_blank")}
+const lang="en",li=()=>0;
+const C128=["212222", "222122", "222221", "121223", "121322", "131222", "122213", "122312", "132212", "221213", "221312", "231212", "112232", "122132", "122231", "113222", "123122", "123221", "223211", "221132", "221231", "213212", "223112", "312131", "311222", "321122", "321221", "312212", "322112", "322211", "212123", "212321", "232121", "111323", "131123", "131321", "112313", "132113", "132311", "211313", "231113", "231311", "112133", "112331", "132131", "113123", "113321", "133121", "313121", "211331", "231131", "213113", "213311", "213131", "311123", "311321", "331121", "312113", "312311", "332111", "314111", "221411", "431111", "111224", "111422", "121124", "121421", "141122", "141221", "112214", "112412", "122114", "122411", "142112", "142211", "241211", "221114", "413111", "241112", "134111", "111242", "121142", "121241", "114212", "124112", "124211", "411212", "421112", "421211", "212141", "214121", "412121", "111143", "111341", "131141", "114113", "114311", "411113", "411311", "113141", "114131", "311141", "411131", "211412", "211214", "211232", "2331112"];
+function bc128(txt){const codes=[104];for(const ch of txt){const c=ch.charCodeAt(0)-32;if(c>=0&&c<=94)codes.push(c)}let sum=104;for(let k=1;k<codes.length;k++)sum+=k*codes[k];codes.push(sum%103,106);let x=10,bars="";const H=46;
+ codes.forEach(c=>{let on=true;for(const w of C128[c]){const n=+w;if(on)bars+=`<rect x="${x}" y="0" width="${n}" height="${H}"/>`;x+=n;on=!on}});
+ return `<svg viewBox="0 0 ${x+10} ${H}" preserveAspectRatio="none" class="rc-bar" role="img" aria-label="${esc(txt)}" fill="#111">${bars}</svg>`}
+const RL={h:["ORDER RECEIPT","অর্ডার রসিদ"],rec:["RECEIPT","রসিদ"],date:["DATE","তারিখ"],type:["TYPE","ধরন"],cust:["CUSTOMER","গ্রাহক"],sub:["Subtotal","সাবটোটাল"],disc:["Discount","ছাড়"],del:["Delivery","ডেলিভারি"],tip:["Rider tip","রাইডার টিপ"],free:["Free","ফ্রি"],tot:["TOTAL","মোট"],pay:["PAYMENT","পেমেন্ট"],ref:["TRX / REF","ট্রানজেকশন / রেফ"],stat:["STATUS","অবস্থা"],wait:["AWAITING CONFIRMATION","নিশ্চিতকরণের অপেক্ষায়"],ty:["Thank you for shopping with Kangaroo Fresh Mart.","কাঙ্গারু ফ্রেশ মার্টে কেনাকাটার জন্য ধন্যবাদ।"],stamp:["ORDER<br>PLACED","অর্ডার<br>গৃহীত"]};
+const rl=k=>RL[k][li(lang)];
+const RCST={Pending:[["ORDER<br>PLACED","AWAITING CONFIRMATION",""],["অর্ডার<br>গৃহীত","নিশ্চিতকরণের অপেক্ষায়",""]],Paid:[["PAYMENT<br>CONFIRMED","PAYMENT CONFIRMED","ok"],["পেমেন্ট<br>নিশ্চিত","পেমেন্ট নিশ্চিত","ok"]],Delivered:[["DELIVERED","DELIVERED","ok"],["ডেলিভারি<br>হয়েছে","ডেলিভারি হয়েছে","ok"]],Cancelled:[["CANCELLED","CANCELLED","bad"],["বাতিল","বাতিল","bad"]]};
+const stOf=s=>(RCST[s]||RCST.Pending)[li(lang)];
+function rcPlain(d){const dt=new Date(d.time);return ["KANGAROO FRESH MART","Order "+d.no+" · "+dt.toLocaleString(),"------------------------",...d.lines.map(l=>l.q+" × "+l.n+" = "+money(l.amt)),"------------------------","Subtotal: "+money(d.sub),...(d.disc?["Discount: -"+money(d.disc)]:[]),"Delivery: "+(d.pick?"Pickup":d.fee?money(d.fee):"Free"),...(d.tip?["Rider tip: "+money(d.tip)]:[]),"TOTAL: "+money(d.total),"Payment: "+d.pay+(d.trx?" · "+d.trx:""),"Status: "+(d.status||"Pending"),"Thank you for shopping with Kangaroo Fresh Mart."].join("\n")}
+function rcHtml(d){const row=(a,b)=>`<div class="rc-r"><span>${a}</span><b>${b}</b></div>`,dt=new Date(d.time);
+ const ST=stOf(d.status);const dd=dt.toLocaleDateString("en-GB",{day:"2-digit",month:"short",year:"numeric"}).toUpperCase(),ds=dd+"  "+dt.toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit"});
+ return `<div class="rc-brand">KANGAROO FRESH MART</div><div class="rc-sub">${rl("h")}</div><hr class="rc-d">${row(rl("rec"),esc(d.no))}${row(rl("date"),ds)}${row(rl("type"),esc(d.mode))}${row(rl("cust"),esc(d.name))}<hr class="rc-d">${d.lines.map(l=>`<div class="rc-r rc-i"><span>${l.q} × ${esc(l.n)}</span><b>${money(l.amt)}</b></div>`).join("")}<hr class="rc-d">${row(rl("sub"),money(d.sub))}${d.disc?row(rl("disc"),"-"+money(d.disc)):""}${row(rl("del"),d.pick?"—":d.fee?money(d.fee):rl("free"))}${d.tip?row(rl("tip"),money(d.tip)):""}<hr class="rc-s"><div class="rc-tot"><span>${rl("tot")}</span><i class="rc-stamp ${ST[2]}"><u>${ST[0]}</u><small>${dd}</small></i><strong>${money(d.total)}</strong></div>${row(rl("pay"),esc(d.pay))}${d.trx?row(rl("ref"),esc(d.trx)):""}<div class="rc-r"><span>${rl("stat")}</span><b id="rcStat">${ST[1]}</b></div><div class="rc-bw">${bc128(d.no)}</div><div class="rc-no">${esc(d.no.split("").join(" "))}</div><p class="rc-ty">${rl("ty")}</p>`}
+
+let rcCur=null;
+function orderRcData(o){const lines=String(o.items||"").split("\n").filter(Boolean).map(l=>{const m=l.match(/^(\d+)\s*×\s*(.*?)\s*=\s*(.+)$/);return m?{q:+m[1],n:m[2],amt:+String(m[3]).replace(/[^\d.]/g,"")||0}:{q:1,n:l,amt:0}});
+ const sub=lines.reduce((x,l)=>x+l.amt,0),disc=+o.discount||0,tip=+o.tip||0,total=+o.total||0,pick=/^pickup/i.test(o.mode||"");
+ return{no:o.orderno||o.id,time:o.time||o.created,mode:o.mode||"",name:o.name||"",pay:o.payment||"",trx:o.trxid||"",pick,sub,disc,tip,total,fee:pick?0:Math.max(0,total-sub+disc-tip),lines,status:o.status||"Pending"}}
+function openRc(id){const o=ORD.find(x=>x.id===id);if(!o)return;rcCur=o;$("rdPaper").innerHTML=rcHtml(orderRcData(o));if(!$("rd").open)$("rd").showModal()}
+$("rdClose").onclick=()=>$("rd").close();
+$("rdSend").onclick=()=>{if(!rcCur)return;window.open("https://wa.me/"+waPhone(rcCur.phone)+"?text="+encodeURIComponent(rcPlain(orderRcData(rcCur))),"_blank")};
+$("rdPrint").onclick=()=>{const f=document.createElement("iframe");f.style.cssText="position:fixed;right:0;bottom:0;width:0;height:0;border:0";document.body.appendChild(f);const d=f.contentDocument;d.open();d.write('<!doctype html><meta charset="utf-8"><title>Receipt</title><style>'+$("rcss").textContent+'body{margin:0;padding:12px;background:#fff}.rc-paper{box-shadow:none;margin:0 auto}.rc-paper::after{display:none}</style><div class="rc-paper">'+$("rdPaper").innerHTML+'</div>');d.close();setTimeout(()=>{try{f.contentWindow.focus();f.contentWindow.print()}catch(e){}setTimeout(()=>f.remove(),2000)},350)};
 function isPaid(o){return o.status==="Paid"||o.status==="Delivered"}
 function drawOrders(){if(tab!=="orders"||!$("obody"))return;
  const nowm=(()=>{const d=new Date();return d.getFullYear()*12+d.getMonth()})();
@@ -574,7 +620,7 @@ function drawOrders(){if(tab!=="orders"||!$("obody"))return;
  $("opills").innerHTML=[["all","All"],["Pending","Pending"],["Paid","Paid"],["Delivered","Delivered"],["Cancelled","Cancelled"]].map(([k,t])=>`<button class="pill${of===k?" on":""}" data-of="${k}">${t} (${k==="all"?inM.length:inM.filter(o=>o.status===k).length})</button>`).join("");
  const paid=inM.filter(isPaid);
  $("ost").innerHTML=`<div><b>${inM.length}</b>Orders this month</div><div><b>${inM.filter(o=>o.status==="Pending").length}</b>Pending</div><div><b>${money(paid.reduce((x,o)=>x+(+o.total||0),0))}</b>Paid / delivered</div>`;
- $("obody").innerHTML=list.map(o=>`<tr><td>${new Date(o.created||0).toLocaleString()}<br><span class="mut">${esc(o.orderno||o.id)}</span></td><td>${esc(o.name||"")}<br><span class="mut">${esc(o.phone||"")}</span><br><span class="mut">${esc(o.address||"")}</span><br><span class="mut">${esc((o.mode||"")+" · "+(o.when||""))}</span></td><td><b>${money(o.total)}</b></td><td>${esc(o.payment||"")}<br><span class="mut">${esc(o.trxid||"")}</span></td><td class="mut">${esc(o.items||"").replace(/\n/g,"<br>")}</td><td><select data-oid="${esc(o.id)}">${["Pending","Paid","Delivered","Cancelled"].map(s=>`<option${s===o.status?" selected":""}>${s}</option>`).join("")}</select><br><button class="btn alt sm" data-wa="${esc(o.id)}" style="margin-top:6px">📲 Message</button></td></tr>`).join("");
+ $("obody").innerHTML=list.map(o=>`<tr><td>${new Date(o.created||0).toLocaleString()}<br><span class="mut">${esc(o.orderno||o.id)}</span></td><td>${esc(o.name||"")}<br><span class="mut">${esc(o.phone||"")}</span><br><span class="mut">${esc(o.address||"")}</span><br><span class="mut">${esc((o.mode||"")+" · "+(o.when||""))}</span></td><td><b>${money(o.total)}</b></td><td>${esc(o.payment||"")}<br><span class="mut">${esc(o.trxid||"")}</span></td><td class="mut">${esc(o.items||"").replace(/\n/g,"<br>")}</td><td><select data-oid="${esc(o.id)}">${["Pending","Paid","Delivered","Cancelled"].map(s=>`<option${s===o.status?" selected":""}>${s}</option>`).join("")}</select><br><button class="btn alt sm" data-rc="${esc(o.id)}" style="margin-top:6px">🧾 Receipt</button> <button class="btn alt sm" data-wa="${esc(o.id)}" style="margin-top:6px">📲 Message</button></td></tr>`).join("");
  $("onone").textContent=list.length?"":(ORD.length?"No orders for this month / filter.":"No orders yet. New orders from the public site appear here.");
  const mm={};ORD.forEach(o=>{const k=mk(o);(mm[k]=mm[k]||{n:0,t:0}).n++;if(isPaid(o))mm[k].t+=+o.total||0});
  $("msum").innerHTML=Object.keys(mm).sort((x,y)=>y-x).map(k=>`<tr><td>${MN[k%12]}, ${Math.floor(k/12)}</td><td>${mm[k].n}</td><td>${money(mm[k].t)}</td></tr>`).join("")||'<tr><td colspan="3" class="mut">No orders yet</td></tr>'}
@@ -586,7 +632,7 @@ function ac(){try{return AC||(AC=new(window.AudioContext||window.webkitAudioCont
 function beep(){const c=ac();if(!c)return;try{c.resume();[880,1175,880,1175].forEach((f,k)=>{const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=f;g.gain.value=.18;o.start(c.currentTime+k*.2);o.stop(c.currentTime+k*.2+.15)})}catch(e){}}
 function toast(t,fn){const el=$("toast");el.textContent=t;el.hidden=false;el.onclick=()=>{el.hidden=true;fn&&fn()};clearTimeout(toast.t);toast.t=setTimeout(()=>el.hidden=true,20000)}
 function sysNote(title,body){try{if(!("Notification"in window)||Notification.permission!=="granted")return;if(navigator.serviceWorker&&navigator.serviceWorker.ready)navigator.serviceWorker.ready.then(r=>r.showNotification(title,{body,icon:"icon-192.png",badge:"icon-192.png",tag:"kfm-order"})).catch(()=>{try{new Notification(title,{body,icon:"icon-192.png"})}catch(e){}});else new Notification(title,{body,icon:"icon-192.png"})}catch(e){}}
-function alertNew(f){const o=f[0],t=f.length>1?"🛒 "+f.length+" new orders!":"🛒 New order: "+(o.name||"customer")+" · "+money(o.total);beep();try{navigator.vibrate&&navigator.vibrate([200,100,200])}catch(e){}toast(t,()=>{om=mk(o);of="all";go("orders")});sysNote("Kangaroo Fresh Mart",t)}
+function alertNew(f){const o=f[0],t=f.length>1?"🛒 "+f.length+" new orders!":"🛒 New order: "+(o.name||"customer")+" · "+money(o.total);beep();try{navigator.vibrate&&navigator.vibrate([200,100,200])}catch(e){}toast(t,()=>{om=mk(o);of="all";go("orders");setTimeout(()=>openRc(o.id),250)});sysNote("Kangaroo Fresh Mart",t)}
 function updateBadge(){const n=ORD.filter(o=>o.status==="Pending").length,b=$("nb");if(b){b.hidden=!n;b.textContent=n}document.title=(n?"("+n+") ":"")+"Kangaroo Fresh Mart – Admin";try{if(n)navigator.setAppBadge&&navigator.setAppBadge(n);else navigator.clearAppBadge&&navigator.clearAppBadge()}catch(e){}}
 async function pollOrders(){let r;try{r=(await KFM.orders()).sort((a,b)=>(b.created||0)-(a.created||0))}catch(e){if($("onone"))$("onone").textContent="Could not load orders: "+e.message;return}
  ORD=r;const mx=ORD.reduce((a,o)=>Math.max(a,o.created||0),0);
@@ -682,7 +728,7 @@ function drawRev(){if(tab!=="reviews")return;$("rp").innerHTML=PEND.length?PEND.
  $("ra").innerHTML=S.reviews.length?S.reviews.map((r,i)=>`<p><b>${"★".repeat(r.r)}</b> ${esc(r.n)} – ${esc(r.en)} <button class="btn alt sm" data-rrm="${i}">Remove</button></p>`).join(""):'<span class="mut">None yet.</span>'}
 
 /* ---- one handler for every edit ---- */
-const M=$("main");M.addEventListener("click",e=>{const b=e.target.closest("[data-wa]");if(b)waOrder(b.dataset.wa)});
+const M=$("main");M.addEventListener("click",e=>{const b=e.target.closest("[data-wa]");if(b)waOrder(b.dataset.wa);const r=e.target.closest("[data-rc]");if(r)openRc(r.dataset.rc)});
 M.addEventListener("change",e=>{const t=e.target,d=t.dataset;
  if(d.oid){const o=ORD.find(x=>x.id===d.oid)||{},ns=t.value;let note="";
    if(ns==="Cancelled"){const r=prompt("Cancel this order?\n\nType a reason to show the customer (optional), then press OK.\nPress Cancel to keep the order as it was.","");if(r===null){t.value=o.status||"Pending";return}note=r.trim()}
